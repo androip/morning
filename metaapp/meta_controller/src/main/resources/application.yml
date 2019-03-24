@@ -7,3 +7,6 @@ server:
 spring:
   application:
     name: meta-server
+  data:
+    mongodb:
+      uri: mongodb://root:123456@localhost:27017/morning

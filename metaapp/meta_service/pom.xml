@@ -7,9 +7,7 @@
     <artifactId>meta_manager</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
-  <groupId>meta_manager</groupId>
   <artifactId>meta_service</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
   <name>meta_service</name>
   <url>http://maven.apache.org</url>
   <properties>
@@ -17,10 +15,9 @@
   </properties>
   <dependencies>
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>3.8.1</version>
-      <scope>test</scope>
+    	<groupId>meta_manager</groupId>
+    	<artifactId>meta_core</artifactId>
+    	<version>0.0.1-SNAPSHOT</version>
     </dependency>
   </dependencies>
 </project>
