@@ -1,0 +1,12 @@
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8000/eureka/
+server:
+  port: 9000
+spring:
+  application:
+    name: meta-test
+  data:
+    mongodb:
+      uri: mongodb://root:123456@localhost:27017/morning

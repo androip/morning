@@ -8,15 +8,17 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Configuration;
 
+
+
 @EnableDiscoveryClient
 @SpringBootApplication
 @Configuration
-@EnableFeignClients
-public class MetaApiApplication {
+@EnableFeignClients()
+public class MetaTestApplication {
 
-	private static Logger logger = LoggerFactory.getLogger(MetaApiApplication.class);
+	private static Logger logger = LoggerFactory.getLogger(MetaTestApplication.class);
 	public static void main(String[] args) {
-		SpringApplication.run(MetaApiApplication.class, args);
-		logger.info("MetaApiApplication start");
+		SpringApplication.run(MetaTestApplication.class, args);
+		logger.info("MetaTestApplication start");
 	}
 }

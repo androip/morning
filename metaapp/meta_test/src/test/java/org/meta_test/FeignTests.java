@@ -1,4 +1,4 @@
-
+package org.meta_test;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,14 +10,14 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.alibaba.fastjson.JSON;
 
-import morining.MetaApiApplication;
+import morining.MetaTestApplication;
 import morining.api.ITestEntityService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = MetaApiApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class FeignAPITests {
+@SpringBootTest(classes = MetaTestApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+public class FeignTests {
 
-	private static Logger logger = LoggerFactory.getLogger(FeignAPITests.class);
+	private static Logger logger = LoggerFactory.getLogger(FeignTests.class);
 	
 	@Autowired 
 	ITestEntityService testEntityService;
@@ -27,6 +27,7 @@ public class FeignAPITests {
 		
 		logger.info("*********8hello test");
 		logger.info("----"+JSON.toJSONString(testEntityService.sayHiFromClientOne("1")));
+		
 		
 	}
 
