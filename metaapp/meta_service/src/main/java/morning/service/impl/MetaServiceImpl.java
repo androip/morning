@@ -3,6 +3,7 @@ package morning.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import morining.dto.TestEntityDTO;
 import morning.dto.ProcessTemplateDTO;
 import morning.entity.TestEntity;
 import morning.repo.TestRepository;
@@ -28,6 +29,12 @@ public class MetaServiceImpl implements IMetaService {
 	public TestEntity getEntity(String id) {
 		
 		return testRepository.findById(id).get();
+	}
+
+	public TestEntityDTO getEntityDTO(String id) {
+		TestEntity obj = testRepository.findById(id).get();
+		TestEntityDTO dto = new TestEntityDTO(obj.getId(),obj.getUserName(),obj.getPassWord());
+		return dto;
 	}
 
 }

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import morining.dto.TestEntityDTO;
 import morning.dto.ProcessTemplateDTO;
 import morning.entity.TestEntity;
 import morning.service.impl.MetaServiceImpl;
@@ -35,11 +36,12 @@ public class MetaController {
 	public void createTestEntity(@RequestBody TestEntity entity) {
 		metaService.createTestEntity(entity);
 	}
+	
 	@ApiOperation(value = "查询测试对象", notes = "测试用")
 	@RequestMapping(value = {"/test/{Id}"}, method = RequestMethod.GET)
-	public @ResponseBody TestEntity getTestEntity(@PathVariable String Id) {
-		TestEntity ent = metaService.getEntity(Id);
-		return ent;
+	public @ResponseBody TestEntityDTO getTestEntity(@PathVariable String Id) {
+		TestEntityDTO dto = metaService.getEntityDTO(Id);
+		return dto;
 	}
 	
 	

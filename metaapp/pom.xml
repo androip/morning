@@ -24,6 +24,7 @@
     <module>meta_service</module>
     <module>meta_api</module>
     <module>meta_core</module>
+    <module>meta_test</module>
   </modules>
 
  <dependencies>
