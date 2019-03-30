@@ -1,7 +1,6 @@
 package morning.service.api;
 
-import morning.dto.ProcessTemplateDTO;
-
+import morining.dto.proc.ProcessTemplateDTO;
 
 public interface IMetaService {
 

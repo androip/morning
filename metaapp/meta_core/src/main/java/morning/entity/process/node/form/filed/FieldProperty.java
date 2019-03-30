@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class FiledProperty implements Serializable{
+public class FieldProperty implements Serializable{
 	
 	/**
 	 * 

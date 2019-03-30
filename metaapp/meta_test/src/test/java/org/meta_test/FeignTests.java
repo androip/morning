@@ -25,8 +25,7 @@ public class FeignTests {
 	@Test
 	public void contextLoads() {
 		
-		logger.info("*********8hello test");
-		logger.info("----"+JSON.toJSONString(testEntityService.sayHiFromClientOne("1")));
+		logger.info("*******************"+JSON.toJSONString(testEntityService.sayHiFromClientOne("1")));
 		
 		
 	}

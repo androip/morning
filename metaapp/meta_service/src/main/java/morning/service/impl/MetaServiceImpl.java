@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import morining.dto.TestEntityDTO;
-import morning.dto.ProcessTemplateDTO;
+import morining.dto.proc.ProcessTemplateDTO;
 import morning.entity.TestEntity;
 import morning.repo.TestRepository;
 import morning.service.api.IMetaService;
