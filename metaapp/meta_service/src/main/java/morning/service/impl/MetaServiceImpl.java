@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import morining.dto.TestEntityDTO;
 import morining.dto.proc.ProcessTemplateDTO;
 import morning.entity.TestEntity;
+import morning.entity.process.ProcessTemplate;
 import morning.repo.TestRepository;
 import morning.service.api.IMetaService;
 
@@ -35,6 +36,10 @@ public class MetaServiceImpl implements IMetaService {
 		TestEntity obj = testRepository.findById(id).get();
 		TestEntityDTO dto = new TestEntityDTO(obj.getId(),obj.getUserName(),obj.getPassWord());
 		return dto;
+	}
+
+	public void saveProcessTemplate(ProcessTemplateDTO dto) {
+		ProcessTemplate entity = ProcessTemplateFactory.create(dto);
 	}
 
 }

@@ -26,10 +26,17 @@ public class MetaController {
 	
 	@ApiOperation(value = "根据流程模版ID，获取流程模版", notes = "")
 	@RequestMapping(value = {"/{processTemplateId}"}, method = RequestMethod.GET)
-	public ProcessTemplateDTO getProcessTemplate(@PathVariable String templateId) {
+	public @ResponseBody ProcessTemplateDTO getProcessTemplate(@PathVariable String templateId) {
 		ProcessTemplateDTO dto  = metaService.getProcessTemplateById(templateId);
 		return dto;
 	}
+	
+	@ApiOperation(value = "根据流程模版ID，获取流程模版", notes = "")
+	@RequestMapping(value = {""}, method = RequestMethod.POST)
+	public void createProcessTemplate(@RequestBody ProcessTemplateDTO dto) {
+		metaService.saveProcessTemplate(dto);
+	}
+	
 	
 	@ApiOperation(value = "创建测试对象", notes = "测试用")
 	@RequestMapping(value = {""}, method = RequestMethod.POST)

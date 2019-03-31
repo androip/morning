@@ -2,9 +2,15 @@ package morining.dto.proc.node;
 
 import java.io.Serializable;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import morining.dto.proc.node.form.FormPropertyDto;
 import morining.dto.proc.node.form.FormStructureDto;
 
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
 public class NodeTemplateDto implements Serializable{
 
 	/**

@@ -1,6 +1,7 @@
 package morining.dto.proc.node.form;
 
 import java.io.Serializable;
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,6 +20,6 @@ public class FormPropertyDto implements Serializable{/**
 	private String formTemplateId;
 	private String formName;
 	private String formType;
-	private FiedPropertyDto filedProperties;
+	private List<FiedPropertyDto> fieldProperties;
 
 }

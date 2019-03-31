@@ -25,10 +25,10 @@ public class ProcessTemplateDTO implements Serializable{
 	
 	private String processName;
 	
-	private List<NodeTemplateDto> nodeTemplateList;
+	private List<NodeTemplateDto> nodeTemplateDtoList;
 	
-	private List<GatewayNodeTemplateDto> gatewayNodeTemplateList;
+	private List<GatewayNodeTemplateDto> gatewayNodeTemplateDtoList;
 	
-	private List<EdgeDto> edgeList;
+	private List<EdgeDto> edgeDtoList;
 
 }

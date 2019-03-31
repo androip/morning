@@ -1,7 +1,7 @@
 package morning.entity.process.node.form;
 
 import java.io.Serializable;
-
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,7 +21,7 @@ public class FormProperty implements Serializable{
 	private String formTemplateId;
 	private String formName;
 	private FORMTYPE formType;
-	private FieldProperty filedProperties;
+	private List<FieldProperty> filedProperties;
 	
 	
 	
