@@ -7,6 +7,7 @@ import morining.dto.TestEntityDTO;
 import morining.dto.proc.ProcessTemplateDTO;
 import morning.entity.TestEntity;
 import morning.entity.process.ProcessTemplate;
+import morning.repo.ProcessTemplateRepository;
 import morning.repo.TestRepository;
 import morning.service.api.IMetaService;
 
@@ -15,6 +16,11 @@ public class MetaServiceImpl implements IMetaService {
 
 	@Autowired
 	private TestRepository testRepository;
+	@Autowired
+	private ProcessTemplateRepository processTemplateRepository;
+	
+	@Autowired
+	private ProcessTemplateFactory processTemplateFactory;
 	
 	@Override
 	public ProcessTemplateDTO getProcessTemplateById(String templateId) {
@@ -39,7 +45,8 @@ public class MetaServiceImpl implements IMetaService {
 	}
 
 	public void saveProcessTemplate(ProcessTemplateDTO dto) {
-		ProcessTemplate entity = ProcessTemplateFactory.create(dto);
+		ProcessTemplate entity = processTemplateFactory.create(dto);
+		processTemplateRepository.save(entity);
 	}
 
 }

@@ -1,6 +1,7 @@
 package morining.dto.proc.node;
 
 import java.io.Serializable;
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,7 +22,7 @@ public class NodeTemplateDto implements Serializable{
 	protected String nodeTemplateId;
 	protected String nodeTemplateName;
 	protected String nodeTemplateType;
-	protected FormPropertyDto formProeties;
+	protected List<FormPropertyDto> formProeties;
 	private FormStructureDto fromStructure;
 
 	

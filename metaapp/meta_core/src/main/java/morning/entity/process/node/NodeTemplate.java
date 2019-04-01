@@ -1,13 +1,13 @@
 package morning.entity.process.node;
 
 import java.io.Serializable;
-
-import morning.entity.process.node.form.FormProperty;
-import morning.entity.process.node.form.FormStructure;
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import morning.entity.process.node.form.FormProperty;
+import morning.entity.process.node.form.FormStructure;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -22,7 +22,7 @@ public class NodeTemplate implements Serializable{
 	protected String nodeTemplateId;
 	protected String nodeTemplateName;
 	protected String nodeTemplateType;
-	protected FormProperty formProeties;
+	protected List<FormProperty> formProeties;
 	private FormStructure fromStructure;
 
 }

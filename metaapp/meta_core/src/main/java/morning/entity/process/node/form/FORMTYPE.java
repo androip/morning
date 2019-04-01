@@ -16,7 +16,7 @@ public enum FORMTYPE {
 		return this.typeValue;
 	}
 	
-	public FORMTYPE getEnumByTypeValue(String typeValue) {
+	public static FORMTYPE getEnumByTypeValue(String typeValue) {
 		for(FORMTYPE formType:FORMTYPE.values()) {
 			if(formType.getTypeValue().equals(typeValue)) {
 				return formType;
