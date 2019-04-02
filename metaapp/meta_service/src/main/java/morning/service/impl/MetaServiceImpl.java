@@ -22,10 +22,14 @@ public class MetaServiceImpl implements IMetaService {
 	@Autowired
 	private ProcessTemplateFactory processTemplateFactory;
 	
+	@Autowired
+	private ProcessTemplateDtoFactory processTemplateDtoFactory;
+	
 	@Override
 	public ProcessTemplateDTO getProcessTemplateById(String templateId) {
-		// TODO Auto-generated method stub
-		return null;
+		ProcessTemplate entity = processTemplateRepository.findById(templateId).orElseThrow(()->new RuntimeException("马勒戈壁，没找到！"));
+		ProcessTemplateDTO dto = processTemplateDtoFactory.createDto(entity);
+		return dto;
 	}
 
 	public void createTestEntity(TestEntity entity) {
@@ -47,6 +51,10 @@ public class MetaServiceImpl implements IMetaService {
 	public void saveProcessTemplate(ProcessTemplateDTO dto) {
 		ProcessTemplate entity = processTemplateFactory.create(dto);
 		processTemplateRepository.save(entity);
+	}
+
+	public void delete(String processtemplateId) {
+		processTemplateRepository.deleteById(processtemplateId);
 	}
 
 }

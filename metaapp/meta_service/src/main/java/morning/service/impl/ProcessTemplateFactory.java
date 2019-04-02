@@ -7,6 +7,8 @@ import org.springframework.stereotype.Component;
 
 import morining.dto.proc.ProcessTemplateDTO;
 import morining.dto.proc.edge.EdgeDto;
+import morining.dto.proc.node.ConditionDto;
+import morining.dto.proc.node.GatewayNodeTemplateDto;
 import morining.dto.proc.node.NodeTemplateDto;
 import morining.dto.proc.node.form.FormPropertyDto;
 import morining.dto.proc.node.form.FormStructureDto;
@@ -14,6 +16,8 @@ import morining.dto.proc.node.form.field.FiedPropertyDto;
 import morining.dto.proc.node.form.field.RelationInfoDto;
 import morning.entity.process.ProcessTemplate;
 import morning.entity.process.edge.Edge;
+import morning.entity.process.node.Condition;
+import morning.entity.process.node.GatewayNodeTemplate;
 import morning.entity.process.node.NodeTemplate;
 import morning.entity.process.node.form.FORMTYPE;
 import morning.entity.process.node.form.FormProperty;
@@ -31,11 +35,32 @@ public class ProcessTemplateFactory {
 		entity.setProcessName(dto.getProcessName());
 		List<NodeTemplate> nodeTemplateList = transformNodeTemplate(dto.getNodeTemplateDtoList());
 		entity.setNodeTemplateList(nodeTemplateList);
-		
+		entity.setGatewayNodeTemplateList(transformGateway(dto.getGatewayNodeTemplateDtoList()));
 		List<Edge> edgeList = transformEdges(dto.getEdgeDtoList());
 		entity.setEdgeList(edgeList);
 		
 		return entity;
+	}
+
+	private List<GatewayNodeTemplate> transformGateway(List<GatewayNodeTemplateDto> gatewayNodeTemplateDtoList) {
+		List<GatewayNodeTemplate> gatewayList = new ArrayList<GatewayNodeTemplate>();
+		for(GatewayNodeTemplateDto dto:gatewayNodeTemplateDtoList) {
+			GatewayNodeTemplate gateway = new GatewayNodeTemplate();
+			gateway.setNodeTemplateId(dto.getNodeTemplateId());
+			gateway.setNodeTemplateName(dto.getNodeTemplateName());
+			gateway.setNodeTemplateType(dto.getNodeTemplateType());
+			gateway.setFromStructure(transformStructure(dto.getFromStructure()));
+			gateway.setFormProeties(transformFormProeties(dto.getFormProeties()));
+			gateway.setCondition(transformCondition(dto.getCondition()));
+			gateway.setDefaultEdgeId(dto.getDefaultEdgeId());
+			gatewayList.add(gateway);
+		}
+		return gatewayList;
+	}
+
+	private Condition transformCondition(ConditionDto dto) {
+		
+		return new Condition(dto.getFiledKey(),dto.getTargets());
 	}
 
 	private List<Edge> transformEdges(List<EdgeDto> edgeDtoList) {
