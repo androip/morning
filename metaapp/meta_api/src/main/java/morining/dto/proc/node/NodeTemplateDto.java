@@ -22,7 +22,7 @@ public class NodeTemplateDto implements Serializable{
 	protected String nodeTemplateId;
 	protected String nodeTemplateName;
 	protected String nodeTemplateType;
-	protected List<FormPropertyDto> formProeties;
+	protected List<FormPropertyDto> formProperties;
 	private FormStructureDto fromStructure;
 
 	

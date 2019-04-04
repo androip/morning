@@ -50,9 +50,9 @@ public class ProcessTemplateFactory {
 			gateway.setNodeTemplateName(dto.getNodeTemplateName());
 			gateway.setNodeTemplateType(dto.getNodeTemplateType());
 			gateway.setFromStructure(transformStructure(dto.getFromStructure()));
-			gateway.setFormProeties(transformFormProeties(dto.getFormProeties()));
+			gateway.setFormProeties(transformFormProeties(dto.getFormProperties()));
 			gateway.setCondition(transformCondition(dto.getCondition()));
-			gateway.setDefaultEdgeId(dto.getDefaultEdgeId());
+			gateway.setDefaultEdgeIds(dto.getDefaultEdgeId());
 			gatewayList.add(gateway);
 		}
 		return gatewayList;
@@ -90,7 +90,7 @@ public class ProcessTemplateFactory {
 				nodeTmpl.setNodeTemplateId(dto.getNodeTemplateId());
 				nodeTmpl.setNodeTemplateName(dto.getNodeTemplateName());
 				nodeTmpl.setNodeTemplateType(dto.getNodeTemplateType());
-				nodeTmpl.setFormProeties(transformFormProeties(dto.getFormProeties()));
+				nodeTmpl.setFormProeties(transformFormProeties(dto.getFormProperties()));
 				nodeTmpl.setFromStructure(transformStructure(dto.getFromStructure()));
 				add(nodeTmpl);
 			});
