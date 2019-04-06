@@ -1,6 +1,11 @@
 package morning.service.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import morining.dto.TestEntityDTO;
@@ -32,16 +37,6 @@ public class MetaServiceImpl implements IMetaService {
 		return dto;
 	}
 
-	public void createTestEntity(TestEntity entity) {
-		testRepository.save(entity);
-		
-	}
-
-	public TestEntity getEntity(String id) {
-		
-		return testRepository.findById(id).get();
-	}
-
 	public TestEntityDTO getEntityDTO(String id) {
 		TestEntity obj = testRepository.findById(id).get();
 		TestEntityDTO dto = new TestEntityDTO(obj.getId(),obj.getUserName(),obj.getPassWord());
@@ -55,6 +50,16 @@ public class MetaServiceImpl implements IMetaService {
 
 	public void delete(String processtemplateId) {
 		processTemplateRepository.deleteById(processtemplateId);
+	}
+
+	public List<ProcessTemplateDTO> getProcessTemplateList(int start,int size) {
+		Page<ProcessTemplate> entityList = processTemplateRepository.findAll(PageRequest.of(1, 20));
+		List<ProcessTemplateDTO> dtoList = new ArrayList<ProcessTemplateDTO>();
+		for(ProcessTemplate obj : entityList) {
+			ProcessTemplateDTO dto = processTemplateDtoFactory.createDto(obj);
+			dtoList.add(dto);
+		}
+		return dtoList;
 	}
 
 }

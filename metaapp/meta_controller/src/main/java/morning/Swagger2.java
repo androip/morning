@@ -26,7 +26,8 @@ public class Swagger2 {
     public Docket createRestApi() {
 	 	ParameterBuilder tokenPar = new ParameterBuilder();  
         List<Parameter> pars = new ArrayList<Parameter>();  
-        tokenPar.name("token").description("令牌")
+        tokenPar
+        .name("token").description("令牌")
         .modelRef(new ModelRef("string")).parameterType("query").required(false).build();  
         pars.add(tokenPar.build());  
         return new Docket(DocumentationType.SWAGGER_2)
@@ -34,7 +35,8 @@ public class Swagger2 {
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("morning"))
                 .paths(PathSelectors.any())
-                .build().globalOperationParameters(pars)  ;
+                .build();
+//                .globalOperationParameters(pars)  ;
     }
  
     @SuppressWarnings("deprecation")

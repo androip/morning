@@ -2,6 +2,7 @@ package morning.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.stereotype.Component;
 
@@ -29,7 +30,9 @@ import morning.entity.process.node.form.filed.RelationInfo;
 public class ProcessTemplateFactory {
 
 	public ProcessTemplate create(ProcessTemplateDTO dto) {
-		
+		if(dto.getProcessTemplateId() == null){
+			dto.setProcessTemplateId(UUID.randomUUID().toString());
+		}
 		ProcessTemplate entity = new ProcessTemplate();
 		entity.setProcessTemplateId(dto.getProcessTemplateId());
 		entity.setProcessName(dto.getProcessName());
@@ -46,6 +49,9 @@ public class ProcessTemplateFactory {
 		List<GatewayNodeTemplate> gatewayList = new ArrayList<GatewayNodeTemplate>();
 		for(GatewayNodeTemplateDto dto:gatewayNodeTemplateDtoList) {
 			GatewayNodeTemplate gateway = new GatewayNodeTemplate();
+			if(dto.getNodeTemplateId() == null){
+				dto.setNodeTemplateId(UUID.randomUUID().toString());
+			}
 			gateway.setNodeTemplateId(dto.getNodeTemplateId());
 			gateway.setNodeTemplateName(dto.getNodeTemplateName());
 			gateway.setNodeTemplateType(dto.getNodeTemplateType());
@@ -71,6 +77,9 @@ public class ProcessTemplateFactory {
 
 		{
 			edgeDtoList.forEach(dto->{
+				if(dto.getId() == null) {
+					dto.setId(UUID.randomUUID().toString());
+				}
 				add(new Edge(dto.getId(),dto.getFrom(),dto.getTo()));
 			});
 			
@@ -86,6 +95,9 @@ public class ProcessTemplateFactory {
 
 		{
 			nodeTemplateDtoList.forEach(dto->{
+				if(dto.getNodeTemplateId() == null) {
+					dto.setNodeTemplateId(UUID.randomUUID().toString());
+				}
 				NodeTemplate nodeTmpl = new NodeTemplate();
 				nodeTmpl.setNodeTemplateId(dto.getNodeTemplateId());
 				nodeTmpl.setNodeTemplateName(dto.getNodeTemplateName());
