@@ -34,6 +34,8 @@ public class ProcessTemplateDtoFactory {
 		dto.setEdgeDtoList(transfromEdgeToDto(entity.getEdgeList()));
 		dto.setNodeTemplateDtoList(transformNodeTemplate(entity.getNodeTemplateList()));
 		dto.setGatewayNodeTemplateDtoList(transformGateway(entity.getGatewayNodeTemplateList()));
+		dto.setCreateTime(entity.getCreateTime());
+		dto.setUpdateTime(entity.getUpdateTime());
 		return dto;
 	}
 
@@ -123,6 +125,15 @@ public class ProcessTemplateDtoFactory {
 				add(new EdgeDto(edge.getId(),edge.getFrom(),edge.getTo()));
 			});
 		}};
+	}
+
+	public List<ProcessTemplateDTO> createDtoList(List<ProcessTemplate> objList) {
+		List<ProcessTemplateDTO> list = new ArrayList<ProcessTemplateDTO>();
+		for(ProcessTemplate obj : objList) {
+			ProcessTemplateDTO dto = createDto(obj);
+			list.add(dto);
+		}
+		return list;
 	}
 
 }

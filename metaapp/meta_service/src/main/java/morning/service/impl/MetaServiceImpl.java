@@ -2,6 +2,7 @@ package morning.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -12,25 +13,25 @@ import morining.dto.TestEntityDTO;
 import morining.dto.proc.ProcessTemplateDTO;
 import morning.entity.TestEntity;
 import morning.entity.process.ProcessTemplate;
+import morning.repo.MetaDao;
 import morning.repo.ProcessTemplateRepository;
 import morning.repo.TestRepository;
-import morning.service.api.IMetaService;
 
 @Service
-public class MetaServiceImpl implements IMetaService {
+public class MetaServiceImpl {
 
 	@Autowired
 	private TestRepository testRepository;
 	@Autowired
 	private ProcessTemplateRepository processTemplateRepository;
-	
+	@Autowired
+	private MetaDao metaDao;
 	@Autowired
 	private ProcessTemplateFactory processTemplateFactory;
 	
 	@Autowired
 	private ProcessTemplateDtoFactory processTemplateDtoFactory;
 	
-	@Override
 	public ProcessTemplateDTO getProcessTemplateById(String templateId) {
 		ProcessTemplate entity = processTemplateRepository.findById(templateId).orElseThrow(()->new RuntimeException("马勒戈壁，没找到！"));
 		ProcessTemplateDTO dto = processTemplateDtoFactory.createDto(entity);
@@ -61,5 +62,11 @@ public class MetaServiceImpl implements IMetaService {
 		}
 		return dtoList;
 	}
+
+	public List<ProcessTemplateDTO> getProcessTemplateLByCondition(Map<String, Object> requestMap) {
+		List<ProcessTemplate> objList = metaDao.query(requestMap);
+		return processTemplateDtoFactory.createDtoList(objList);
+	}
+
 
 }

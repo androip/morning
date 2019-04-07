@@ -1,6 +1,7 @@
 package morning.entity.process;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.annotation.Id;
@@ -25,13 +26,11 @@ public class ProcessTemplate implements Serializable{
 	private static final long serialVersionUID = -4350482863676720917L;
 	@Id
 	private String processTemplateId;
-	
 	private String processName;
-	
+	private String createTime;
+	private String updateTime;
 	private List<NodeTemplate> nodeTemplateList;
-	
 	private List<GatewayNodeTemplate> gatewayNodeTemplateList;
-	
 	private List<Edge> edgeList;
 
 }

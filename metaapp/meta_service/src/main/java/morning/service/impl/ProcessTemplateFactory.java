@@ -1,9 +1,12 @@
 package morning.service.impl;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import org.bouncycastle.asn1.dvcs.Data;
 import org.springframework.stereotype.Component;
 
 import morining.dto.proc.ProcessTemplateDTO;
@@ -41,6 +44,13 @@ public class ProcessTemplateFactory {
 		entity.setGatewayNodeTemplateList(transformGateway(dto.getGatewayNodeTemplateDtoList()));
 		List<Edge> edgeList = transformEdges(dto.getEdgeDtoList());
 		entity.setEdgeList(edgeList);
+		if(dto.getCreateTime() == null) {
+			entity.setCreateTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+		}else {
+			entity.setCreateTime(dto.getCreateTime());
+		}
+		entity.setUpdateTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+		
 		
 		return entity;
 	}

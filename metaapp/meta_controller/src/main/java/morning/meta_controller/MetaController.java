@@ -1,6 +1,12 @@
 package morning.meta_controller;
 
+import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -50,9 +56,35 @@ public class MetaController {
 		metaService.delete(processtemplateId);
 	}
 	
-	@ApiOperation(value = "获取多个模版", notes = "")
-	@RequestMapping(value = {"/processtemplate"}, method = RequestMethod.GET)
+	@ApiOperation(value = "分页获所有个模版", notes = "")
+	@RequestMapping(value = {"/processtemplates"}, method = RequestMethod.GET)
 	public @ResponseBody List<ProcessTemplateDTO> getProcessTemplateList(@RequestParam(required=false) Integer start,@RequestParam(required=false) Integer size) {
 		return metaService.getProcessTemplateList((start==null)?0:start,(size==null)?10:size);
 	}
+	
+	
+	@ApiOperation(value = "根据条件获多个模版", notes = "")
+	@RequestMapping(value = {"/processtemplatelist"}, method = RequestMethod.GET)
+	public @ResponseBody List<ProcessTemplateDTO> getProcessTemplateListBy(HttpServletRequest request) {
+		Map<String,Object> requestMap = getParams(request);
+		return metaService.getProcessTemplateLByCondition(requestMap);
+	}
+	
+	private Map<String,Object> getParams(HttpServletRequest request) {  
+        Map<String,Object> map = new HashMap<String,Object>();  
+        Enumeration paramNames = request.getParameterNames();  
+        while (paramNames.hasMoreElements()) {  
+            String paramName = (String) paramNames.nextElement();  
+
+            String[] paramValues = request.getParameterValues(paramName);  
+            if (paramValues.length >0) {  
+                String paramValue = paramValues[0];  
+                if (paramValue.length() != 0) {  
+                    map.put(paramName, paramValue);  
+                }  
+            }  
+        }  
+        return map;
+    }
+
 }

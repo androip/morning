@@ -1,12 +1,12 @@
 package morining.dto.proc;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import morining.dto.TestEntityDTO;
 import morining.dto.proc.edge.EdgeDto;
 import morining.dto.proc.node.GatewayNodeTemplateDto;
 import morining.dto.proc.node.NodeTemplateDto;
@@ -22,13 +22,11 @@ public class ProcessTemplateDTO implements Serializable{
 	private static final long serialVersionUID = -2129030445545654283L;
 	
 	private String processTemplateId;
-	
 	private String processName;
-	
+	private String createTime;
+	private String updateTime;
 	private List<NodeTemplateDto> nodeTemplateDtoList;
-	
 	private List<GatewayNodeTemplateDto> gatewayNodeTemplateDtoList;
-	
 	private List<EdgeDto> edgeDtoList;
 
 }
