@@ -53,7 +53,7 @@ public class MetaServiceImpl implements IMetaService {
 	}
 
 	public List<ProcessTemplateDTO> getProcessTemplateList(int start,int size) {
-		Page<ProcessTemplate> entityList = processTemplateRepository.findAll(PageRequest.of(1, 20));
+		Page<ProcessTemplate> entityList = processTemplateRepository.findAll(PageRequest.of(start, size));
 		List<ProcessTemplateDTO> dtoList = new ArrayList<ProcessTemplateDTO>();
 		for(ProcessTemplate obj : entityList) {
 			ProcessTemplateDTO dto = processTemplateDtoFactory.createDto(obj);

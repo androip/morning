@@ -53,6 +53,6 @@ public class MetaController {
 	@ApiOperation(value = "获取多个模版", notes = "")
 	@RequestMapping(value = {"/processtemplate"}, method = RequestMethod.GET)
 	public @ResponseBody List<ProcessTemplateDTO> getProcessTemplateList(@RequestParam(required=false) Integer start,@RequestParam(required=false) Integer size) {
-		return metaService.getProcessTemplateList((start==null)?0:start,(size==null)?0:size);
+		return metaService.getProcessTemplateList((start==null)?0:start,(size==null)?10:size);
 	}
 }
