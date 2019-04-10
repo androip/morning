@@ -1,22 +1,19 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>meta_manager</groupId>
-    <artifactId>meta_manager</artifactId>
+    <groupId>engine</groupId>
+    <artifactId>engine</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
-  <artifactId>meta_controller</artifactId>
-  <name>meta_controller</name>
+  <artifactId>engine_web</artifactId>
+  <name>engine_web</name>
   <url>http://maven.apache.org</url>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
   <dependencies>
-
-  	<!-- https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-eureka -->
 	<dependency>
 	    <groupId>org.springframework.cloud</groupId>
 	    <artifactId>spring-cloud-starter-eureka</artifactId>
@@ -25,7 +22,12 @@
 	<dependency>
          <groupId>org.springframework.cloud</groupId>
          <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
-         </dependency>
+         <version>1.4.6.RELEASE</version>
+    </dependency>
+   <dependency>
+         <groupId>org.springframework.cloud</groupId>
+         <artifactId>spring-cloud-starter-openfeign</artifactId>
+    </dependency>
 	<dependency>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-web</artifactId>
@@ -46,23 +48,9 @@
 	    <version>2.2.2</version>
 	</dependency>
 	<dependency>
-		<groupId>meta_manager</groupId>
-		<artifactId>meta_service</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
-	</dependency>
-	<dependency>
-		<groupId>meta_manager</groupId>
-		<artifactId>meta_api</artifactId>
+		<groupId>engine_service</groupId>
+		<artifactId>engine_service</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</dependency>
   </dependencies>
-  <build>
-   		<defaultGoal>compile</defaultGoal>
-       <plugins>
-           <plugin>
-               <groupId>org.springframework.boot</groupId>
-               <artifactId>spring-boot-maven-plugin</artifactId>
-           </plugin>
-       </plugins>
-   </build>
 </project>
