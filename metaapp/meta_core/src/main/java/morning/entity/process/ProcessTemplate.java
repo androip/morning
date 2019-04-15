@@ -1,10 +1,10 @@
 package morning.entity.process;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.AllArgsConstructor;
@@ -26,6 +26,7 @@ public class ProcessTemplate implements Serializable{
 	private static final long serialVersionUID = -4350482863676720917L;
 	@Id
 	private String processTemplateId;
+	@Indexed(unique=true)
 	private String processName;
 	private String createTime;
 	private String updateTime;

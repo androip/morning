@@ -1,4 +1,4 @@
-package morning.service.impl;
+package morning.service.factory;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -17,16 +17,18 @@ import morining.dto.proc.node.form.FormPropertyDto;
 import morining.dto.proc.node.form.FormStructureDto;
 import morining.dto.proc.node.form.field.FiedPropertyDto;
 import morining.dto.proc.node.form.field.RelationInfoDto;
+import morining.dto.rel.FormRelationDto;
+import morning.entity.process.FormRelation;
 import morning.entity.process.ProcessTemplate;
 import morning.entity.process.edge.Edge;
 import morning.entity.process.node.Condition;
 import morning.entity.process.node.GatewayNodeTemplate;
 import morning.entity.process.node.NodeTemplate;
-import morning.entity.process.node.form.FORMTYPE;
 import morning.entity.process.node.form.FormProperty;
 import morning.entity.process.node.form.FormStructure;
 import morning.entity.process.node.form.filed.FieldProperty;
 import morning.entity.process.node.form.filed.RelationInfo;
+import morning.vo.FORMTYPE;
 
 @Component
 public class ProcessTemplateFactory {
@@ -49,8 +51,6 @@ public class ProcessTemplateFactory {
 			entity.setCreateTime(dto.getCreateTime());
 		}
 		entity.setUpdateTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
-		
-		
 		return entity;
 	}
 
@@ -160,8 +160,8 @@ public class ProcessTemplateFactory {
 			
 			return new RelationInfo(dto.getRelationSource(),
 					dto.getViewFkey(),
-					dto.getForeignFkey(),
-					dto.getConditionFKey());
+					dto.getConditions(),
+					dto.getPkey());
 		}};
 	}
 

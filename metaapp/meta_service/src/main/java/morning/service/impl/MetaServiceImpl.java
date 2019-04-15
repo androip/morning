@@ -9,19 +9,16 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import morining.dto.TestEntityDTO;
 import morining.dto.proc.ProcessTemplateDTO;
-import morning.entity.TestEntity;
 import morning.entity.process.ProcessTemplate;
 import morning.repo.MetaDao;
 import morning.repo.ProcessTemplateRepository;
-import morning.repo.TestRepository;
+import morning.service.factory.ProcessTemplateDtoFactory;
+import morning.service.factory.ProcessTemplateFactory;
 
 @Service
 public class MetaServiceImpl {
 
-	@Autowired
-	private TestRepository testRepository;
 	@Autowired
 	private ProcessTemplateRepository processTemplateRepository;
 	@Autowired
@@ -35,12 +32,6 @@ public class MetaServiceImpl {
 	public ProcessTemplateDTO getProcessTemplateById(String templateId) {
 		ProcessTemplate entity = processTemplateRepository.findById(templateId).orElseThrow(()->new RuntimeException("马勒戈壁，没找到！"));
 		ProcessTemplateDTO dto = processTemplateDtoFactory.createDto(entity);
-		return dto;
-	}
-
-	public TestEntityDTO getEntityDTO(String id) {
-		TestEntity obj = testRepository.findById(id).get();
-		TestEntityDTO dto = new TestEntityDTO(obj.getId(),obj.getUserName(),obj.getPassWord());
 		return dto;
 	}
 

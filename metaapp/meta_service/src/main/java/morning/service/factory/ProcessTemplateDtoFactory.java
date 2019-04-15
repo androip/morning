@@ -1,4 +1,4 @@
-package morning.service.impl;
+package morning.service.factory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -84,7 +84,7 @@ public class ProcessTemplateDtoFactory {
 	}
 
 	private RelationInfoDto transfromRelation(RelationInfo relation) {
-		return new RelationInfoDto(relation.getRelationSource(),relation.getViewFkey(),relation.getForeignFkey(),relation.getConditionFKey());
+		return new RelationInfoDto(relation.getRelationSource(),relation.getViewFkey(),relation.getConditions(),relation.getPkey());
 	}
 
 	private FormStructureDto transfromFormStructure(FormStructure fromStructure) {

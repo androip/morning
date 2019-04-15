@@ -1,6 +1,8 @@
 package morning.entity.process.node.form.filed;
 
 import java.io.Serializable;
+import java.util.List;
+import java.util.Map;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,11 +21,11 @@ public class RelationInfo implements Serializable {
 	/**
 	 * Select viewFkey
 	 * from relationSource
-	 * where conditionFKey and foreignFkey;
+	 * where conditions;
 	 */
 	private String relationSource;
-	private String viewFkey;
-	private String foreignFkey;
-	private String conditionFKey;
+	private List<String> viewFkey;
+	private Map<String,String> conditions;   //key 条件字段 ,val 条件值 
+	private String Pkey; //relationSource的主键字段
 
 }

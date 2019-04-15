@@ -1,4 +1,4 @@
-package morning.entity.process.node.form;
+package morning.vo;
 
 public enum FORMTYPE {
 
