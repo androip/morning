@@ -23,6 +23,7 @@
   	<module>engine_service</module>
   	<module>engine_orm</module>
   	<module>engine_test</module>
+    <module>engin_orm</module>
   </modules>
   
   <dependencies>

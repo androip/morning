@@ -6,8 +6,10 @@ import org.springframework.stereotype.Service;
 
 import morining.api.IProcessMetaService;
 import morining.dto.proc.ProcessTemplateDTO;
+import morning.entity.NodeInstance;
 import morning.entity.ProcessInstance;
 import morning.service.util.TimeUtil;
+import morning.vo.STATUS;
 
 @Service
 public class EngineService {
@@ -22,8 +24,9 @@ public class EngineService {
 				processTmpDto.getProcessName(),
 				TimeUtil.getSystemTime(),
 				userId);
-		// TODO 初始化流程实例的状态为Ready
-		// TODO 初始化Start节点状态为Running
+		//创建Start节点，并初始化状态为Running
+		NodeInstance nodeIns = procIns.createNodeInstance(processTmpDto.getStartNodeTmpId(),
+				processTmpDto.getNodeType(processTmpDto.getStartNodeTmpId()),STATUS.RUNNING.getValue());
 		return "XXid";
 	}
 
@@ -36,6 +39,7 @@ public class EngineService {
 		procIns.setProcessName(processName);
 		procIns.setCreateUserId(userId);
 		procIns.setUpdateTime(systemTime);
+		procIns.setStatus(STATUS.READY.getValue());
 		return procIns;
 	}
 

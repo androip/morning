@@ -22,8 +22,8 @@
   		<version>0.0.1-SNAPSHOT</version>
   	</dependency>
   	<dependency>
-  		<groupId>engine_orm</groupId>
-  		<artifactId>engine_orm</artifactId>
+  		<groupId>engine</groupId>
+  		<artifactId>engin_orm</artifactId>
   		<version>0.0.1-SNAPSHOT</version>
   	</dependency>
   </dependencies>

@@ -28,5 +28,24 @@ public class ProcessTemplateDTO implements Serializable{
 	private List<NodeTemplateDto> nodeTemplateDtoList;
 	private List<GatewayNodeTemplateDto> gatewayNodeTemplateDtoList;
 	private List<EdgeDto> edgeDtoList;
+	
+	public String getStartNodeTmpId() {
+		for(NodeTemplateDto dto:nodeTemplateDtoList) {
+			if(dto.getNodeTemplateType().equals("Start")) {
+				return dto.getNodeTemplateId();
+			}
+		}
+		return null;
+	}
+
+
+	public String getNodeType(String nodeTid) {
+		for(NodeTemplateDto dto:nodeTemplateDtoList) {
+			if(dto.getNodeTemplateId().equals(nodeTid)) {
+				return dto.getNodeTemplateType();
+			}
+		}
+		return null;
+	}
 
 }
