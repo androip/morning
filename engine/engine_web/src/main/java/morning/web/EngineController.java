@@ -20,8 +20,8 @@ public class EngineController {
 	
 	@ApiOperation(value = "指定流程模版，实例化一个流程", notes = "")
 	@RequestMapping(value = {"/procins"}, method = RequestMethod.POST)
-	public String  getProcessTemplate(@RequestParam String processTemplateId) {
-		String processId = engineService.startProcess(processTemplateId);
+	public String  getProcessTemplate(@RequestParam String processTemplateId,@RequestParam String userId) {
+		String processId = engineService.startProcess(processTemplateId,userId);
 		return processId;
 	}
 	
