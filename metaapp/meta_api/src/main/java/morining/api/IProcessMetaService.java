@@ -15,8 +15,9 @@ import morining.dto.proc.ProcessTemplateDTO;
 public interface IProcessMetaService {
 
 	 @RequestMapping(value = {"/meta/processtemplate/{processTemplateId}"}, method = RequestMethod.GET)
-	 public @ResponseBody ProcessTemplateDTO getProcessTemplate(@PathVariable String processTemplateId);
+	 public @ResponseBody ProcessTemplateDTO getProcessTemplate(@PathVariable(value="processTemplateId") String processTemplateId);
 
-	 @RequestMapping(value = {"/meta/processtemplate"}, method = RequestMethod.GET)
-	 public @ResponseBody List<ProcessTemplateDTO> getProcessTemplateList(@RequestParam(required=false) Integer start,@RequestParam(required=false) Integer size);
+	 @RequestMapping(value = {"/meta/processtemplates"}, method = RequestMethod.GET)
+	 public @ResponseBody List<ProcessTemplateDTO> getProcessTemplateList(@RequestParam(required=false,value="start") Integer start,
+			 															@RequestParam(required=false,value="size") Integer size);
 }

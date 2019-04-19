@@ -21,7 +21,7 @@
   	<module>engine_web</module>
   	<module>engine_api</module>
   	<module>engine_service</module>
-  	<module>engine_orm</module>
+  	
   	<module>engine_test</module>
     <module>engin_orm</module>
   </modules>

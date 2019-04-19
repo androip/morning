@@ -16,7 +16,7 @@ import morning.service.impl.EngineService;
 public class EngineController {
 
 	@Autowired
-	EngineService engineService;
+	private EngineService engineService;
 	
 	@ApiOperation(value = "指定流程模版，实例化一个流程", notes = "")
 	@RequestMapping(value = {"/procins"}, method = RequestMethod.POST)

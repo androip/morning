@@ -2,19 +2,24 @@ package morning.service.impl;
 
 import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import morining.api.IProcessMetaService;
 import morining.dto.proc.ProcessTemplateDTO;
 import morning.entity.NodeInstance;
 import morning.entity.ProcessInstance;
+import morning.repo.ProcessInstanceDao;
 import morning.service.util.TimeUtil;
 import morning.vo.STATUS;
 
 @Service
 public class EngineService {
 
+	@Autowired
 	private IProcessMetaService processMetaService;
+	@Autowired
+	private ProcessInstanceDao processInstanceDao;
 	
 	public String startProcess(String processTemplateId,String userId) {
 		//调用Meta api 查询流程模版
@@ -25,9 +30,12 @@ public class EngineService {
 				TimeUtil.getSystemTime(),
 				userId);
 		//创建Start节点，并初始化状态为Running
-		NodeInstance nodeIns = procIns.createNodeInstance(processTmpDto.getStartNodeTmpId(),
+		NodeInstance startNodeIns = procIns.createNodeInstance(processTmpDto.getStartNodeTmpId(),
 				processTmpDto.getNodeType(processTmpDto.getStartNodeTmpId()),STATUS.RUNNING.getValue());
-		return "XXid";
+		//持久化流程实例和START节点实例 
+		processInstanceDao.save(procIns);
+		//TODO 发送事件（需持久化）->待办事项
+		return procIns.getProcessInsId();
 	}
 
 	private ProcessInstance createProcessIns(String processTemplateId, String processName, String systemTime,

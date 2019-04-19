@@ -1,0 +1,14 @@
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8000/eureka/
+server:
+  port: 9001
+spring:
+  application:
+    name: engine-test
+  datasource:
+    url: jdbc:mysql://localhost:3306/morining
+    username: root
+    password: jiangpeng
+    driver-class-name: com.mysql.jdbc.Driver

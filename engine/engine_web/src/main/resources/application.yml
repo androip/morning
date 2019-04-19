@@ -7,3 +7,13 @@ server:
 spring:
   application:
     name: engine-server
+  datasource:
+    url: jdbc:mysql://localhost:3306/morning
+    username: root
+    password: jiangpeng
+    driver-class-name: com.mysql.jdbc.Driver
+
+logging:
+  level:
+    root: INFO
+    morning: DEBUG

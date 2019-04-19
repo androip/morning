@@ -24,11 +24,11 @@ public class MetaProcessTemplateTests {
 
 	@Test
 	public void getOneTest() {
-		logger.info(JSON.toJSONString(processMetaService.getProcessTemplate("1")));
+		logger.info("getOneTest:"+JSON.toJSONString(processMetaService.getProcessTemplate("1")));
 	}
 	
 	@Test
 	public void getListTest() {
-		logger.info(JSON.toJSONString(processMetaService.getProcessTemplateList(0,0)));
+		logger.info(JSON.toJSONString(processMetaService.getProcessTemplateList(0,1)));
 	}
 }

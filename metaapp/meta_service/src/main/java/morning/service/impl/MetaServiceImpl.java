@@ -44,6 +44,12 @@ public class MetaServiceImpl {
 		processTemplateRepository.deleteById(processtemplateId);
 	}
 
+	/**
+	 * paging query
+	 * @param start
+	 * @param size
+	 * @return
+	 */
 	public List<ProcessTemplateDTO> getProcessTemplateList(int start,int size) {
 		Page<ProcessTemplate> entityList = processTemplateRepository.findAll(PageRequest.of(start, size));
 		List<ProcessTemplateDTO> dtoList = new ArrayList<ProcessTemplateDTO>();
