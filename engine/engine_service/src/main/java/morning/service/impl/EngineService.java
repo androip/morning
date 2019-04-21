@@ -9,6 +9,7 @@ import morining.api.IProcessMetaService;
 import morining.dto.proc.ProcessTemplateDTO;
 import morning.entity.NodeInstance;
 import morning.entity.ProcessInstance;
+import morning.repo.NodeInstanceDao;
 import morning.repo.ProcessInstanceDao;
 import morning.service.util.TimeUtil;
 import morning.vo.STATUS;
@@ -20,6 +21,8 @@ public class EngineService {
 	private IProcessMetaService processMetaService;
 	@Autowired
 	private ProcessInstanceDao processInstanceDao;
+	@Autowired
+	private NodeInstanceDao nodeInstanceDao;
 	
 	public String startProcess(String processTemplateId,String userId) {
 		//调用Meta api 查询流程模版
@@ -30,10 +33,13 @@ public class EngineService {
 				TimeUtil.getSystemTime(),
 				userId);
 		//创建Start节点，并初始化状态为Running
-		NodeInstance startNodeIns = procIns.createNodeInstance(processTmpDto.getStartNodeTmpId(),
-				processTmpDto.getNodeType(processTmpDto.getStartNodeTmpId()),STATUS.RUNNING.getValue());
+		NodeInstance startNodeIns = procIns.createNodeInstance(processTmpDto.startNodeTmpId(),
+				processTmpDto.getNodeType(processTmpDto.startNodeTmpId()),STATUS.RUNNING.getValue());
 		//持久化流程实例和START节点实例 
 		processInstanceDao.save(procIns);
+		
+		nodeInstanceDao.save(startNodeIns);
+		
 		//TODO 发送事件（需持久化）->待办事项
 		return procIns.getProcessInsId();
 	}

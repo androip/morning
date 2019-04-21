@@ -27,6 +27,6 @@ public class EngineTests {
 	
 	@Test
 	public void getOneTest() {
-		logger.info(JSON.toJSONString(engineService.startProcess("1", "jiangpeng")));
+		logger.info(JSON.toJSONString(engineService.startProcess("p1", "jiangpeng")));
 	}
 }

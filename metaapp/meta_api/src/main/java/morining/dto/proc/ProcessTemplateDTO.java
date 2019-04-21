@@ -1,7 +1,6 @@
 package morining.dto.proc;
 
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
@@ -29,7 +28,7 @@ public class ProcessTemplateDTO implements Serializable{
 	private List<GatewayNodeTemplateDto> gatewayNodeTemplateDtoList;
 	private List<EdgeDto> edgeDtoList;
 	
-	public String getStartNodeTmpId() {
+	public String startNodeTmpId() {
 		for(NodeTemplateDto dto:nodeTemplateDtoList) {
 			if(dto.getNodeTemplateType().equals("Start")) {
 				return dto.getNodeTemplateId();

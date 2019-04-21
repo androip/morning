@@ -1,0 +1,203 @@
+{
+  "createTime": "string",
+  "edgeDtoList": [
+    {
+      "from": "n0",
+      "id": "e1",
+      "to": "n1"
+    },    {
+      "from": "n1",
+      "id": "e2",
+      "to": "n2"
+    }, {
+      "from": "n2",
+      "id": "e2",
+      "to": "n3"
+    }, {
+      "from": "n3",
+      "id": "e3",
+      "to": "n4"
+    }
+  ],
+  "gatewayNodeTemplateDtoList": [
+    {
+      "condition": {
+        "filedKey": "string",
+        "targets": {}
+      },
+      "defaultEdgeId": [
+        "string"
+      ],
+      "formProperties": [
+        {
+          "fieldProperties": [
+            {
+              "filedKey": "string",
+              "filedName": "string",
+              "filedType": "string",
+              "filedViewName": "string",
+              "readOnly": true,
+              "relation": {
+                "conditions": {},
+                "pkey": "string",
+                "relationSource": "string",
+                "viewFkey": [
+                  "string"
+                ]
+              },
+              "visible": true
+            }
+          ],
+          "formName": "string",
+          "formTemplateId": "string",
+          "formType": "bill"
+        }
+      ],
+      "fromStructure": {
+        "parentId": "string",
+        "selfId": "string"
+      },
+      "nodeTemplateId": "n2",
+      "nodeTemplateName": "采购审核",
+      "nodeTemplateType": "Ta"
+    }
+  ],
+  "nodeTemplateDtoList": [
+    {
+      "formProperties": [
+        {
+          "fieldProperties": [
+            {
+              "filedKey": "string",
+              "filedName": "string",
+              "filedType": "string",
+              "filedViewName": "string",
+              "readOnly": true,
+              "relation": {
+                "conditions": {},
+                "pkey": "string",
+                "relationSource": "string",
+                "viewFkey": [
+                  "string"
+                ]
+              },
+              "visible": true
+            }
+          ],
+          "formName": "string",
+          "formTemplateId": "string",
+          "formType": "bill"
+        }
+      ],
+      "fromStructure": {
+        "parentId": "string",
+        "selfId": "string"
+      },
+      "nodeTemplateId": "n0",
+      "nodeTemplateName": "开始节点",
+      "nodeTemplateType": "Start"
+    },{
+      "formProperties": [
+        {
+          "fieldProperties": [
+            {
+              "filedKey": "string",
+              "filedName": "string",
+              "filedType": "string",
+              "filedViewName": "string",
+              "readOnly": true,
+              "relation": {
+                "conditions": {},
+                "pkey": "string",
+                "relationSource": "string",
+                "viewFkey": [
+                  "string"
+                ]
+              },
+              "visible": true
+            }
+          ],
+          "formName": "string",
+          "formTemplateId": "string",
+          "formType": "bill"
+        }
+      ],
+      "fromStructure": {
+        "parentId": "string",
+        "selfId": "string"
+      },
+      "nodeTemplateId": "n1",
+      "nodeTemplateName": "采购申请",
+      "nodeTemplateType": "Task"
+    },{
+      "formProperties": [
+        {
+          "fieldProperties": [
+            {
+              "filedKey": "string",
+              "filedName": "string",
+              "filedType": "string",
+              "filedViewName": "string",
+              "readOnly": true,
+              "relation": {
+                "conditions": {},
+                "pkey": "string",
+                "relationSource": "string",
+                "viewFkey": [
+                  "string"
+                ]
+              },
+              "visible": true
+            }
+          ],
+          "formName": "string",
+          "formTemplateId": "string",
+          "formType": "bill"
+        }
+      ],
+      "fromStructure": {
+        "parentId": "string",
+        "selfId": "string"
+      },
+      "nodeTemplateId": "n3",
+      "nodeTemplateName": "采购到货",
+      "nodeTemplateType": "Task"
+    },{
+      "formProperties": [
+        {
+          "fieldProperties": [
+            {
+              "filedKey": "string",
+              "filedName": "string",
+              "filedType": "string",
+              "filedViewName": "string",
+              "readOnly": true,
+              "relation": {
+                "conditions": {},
+                "pkey": "string",
+                "relationSource": "string",
+                "viewFkey": [
+                  "string"
+                ]
+              },
+              "visible": true
+            }
+          ],
+          "formName": "string",
+          "formTemplateId": "string",
+          "formType": "bill"
+        }
+      ],
+      "fromStructure": {
+        "parentId": "string",
+        "selfId": "string"
+      },
+      "nodeTemplateId": "n4",
+      "nodeTemplateName": "结束节点",
+      "nodeTemplateType": "End"
+    }
+  ],
+  "processName": "采购流程",
+  "processTemplateId": "p1",
+  "updateTime": "string"
+}
