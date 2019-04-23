@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import morining.dto.proc.ProcessTemplateDTO;
+import morining.exception.MetaServiceException;
 import morning.service.impl.MetaServiceImpl;
 
 @Api(value = "Meta管理API接口", tags = "Meta管理API接口")
@@ -31,7 +32,7 @@ public class MetaController {
 	
 	@ApiOperation(value = "根据流程模版ID，获取流程模版", notes = "")
 	@RequestMapping(value = {"/processtemplate/{processTemplateId}"}, method = RequestMethod.GET)
-	public @ResponseBody ProcessTemplateDTO getProcessTemplate(@PathVariable String processTemplateId) {
+	public @ResponseBody ProcessTemplateDTO getProcessTemplate(@PathVariable String processTemplateId) throws MetaServiceException {
 		ProcessTemplateDTO dto  = metaService.getProcessTemplateById(processTemplateId);
 		return dto;
 	}

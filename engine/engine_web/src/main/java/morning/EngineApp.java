@@ -10,10 +10,9 @@ import org.springframework.context.annotation.Configuration;
 
 
 @EnableDiscoveryClient
-@SpringBootApplication()//scanBasePackages = {"engine_service"}
+@SpringBootApplication()
 @Configuration
 @EnableFeignClients(basePackages="morining")
-//@ComponentScan(basePackages= {"engine_service"})
 public class EngineApp {
 
 	private static Logger logger = LoggerFactory.getLogger(EngineApp.class);

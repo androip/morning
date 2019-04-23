@@ -1,4 +1,4 @@
-package morining;
+package morning;
 
 import java.util.Arrays;
 

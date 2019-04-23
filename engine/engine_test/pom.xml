@@ -36,5 +36,15 @@
     	<artifactId>engine_service</artifactId>
     	<version>0.0.1-SNAPSHOT</version>
     </dependency>
+    <dependency>
+    	<groupId>engine_api</groupId>
+    	<artifactId>engine_api</artifactId>
+    	<version>0.0.1-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+    	<groupId>engine</groupId>
+    	<artifactId>engin_orm</artifactId>
+    	<version>0.0.1-SNAPSHOT</version>
+    </dependency>
   </dependencies>
 </project>

@@ -10,6 +10,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import morining.dto.proc.ProcessTemplateDTO;
+import morining.exception.MetaServiceException;
 import morning.entity.process.ProcessTemplate;
 import morning.repo.MetaDao;
 import morning.repo.ProcessTemplateRepository;
@@ -29,8 +30,8 @@ public class MetaServiceImpl {
 	@Autowired
 	private ProcessTemplateDtoFactory processTemplateDtoFactory;
 	
-	public ProcessTemplateDTO getProcessTemplateById(String templateId) {
-		ProcessTemplate entity = processTemplateRepository.findById(templateId).orElseThrow(()->new RuntimeException("马勒戈壁，没找到！"));
+	public ProcessTemplateDTO getProcessTemplateById(String templateId) throws MetaServiceException {
+		ProcessTemplate entity = processTemplateRepository.findById(templateId).orElseThrow(()->new MetaServiceException("马勒戈壁，没找到！"));
 		ProcessTemplateDTO dto = processTemplateDtoFactory.createDto(entity);
 		return dto;
 	}
