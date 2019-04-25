@@ -66,13 +66,14 @@ public class EngineService {
 				userId
 				);
 		try {
+			// 发送事件（需持久化）->待办事项
 			eventSupport.dispatchEvent(event);
 		} catch (EventException e) {
 			e.printStackTrace();
 		} catch (MorningException e) {
 			e.printStackTrace();
 		}
-		//TODO 发送事件（需持久化）->待办事项
+		
 		return procIns.getProcessInsId();
 	}
 

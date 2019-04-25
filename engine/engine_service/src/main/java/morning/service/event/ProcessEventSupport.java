@@ -56,8 +56,7 @@ public class ProcessEventSupport {
 		}
 	}
 	public void removeObserver(EventListener listener) {
-		// TODO Auto-generated method stub
-
+		listenerList.remove(listener);
 	}
 
 	/**
