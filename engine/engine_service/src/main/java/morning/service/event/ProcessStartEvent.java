@@ -10,8 +10,6 @@ import morning.event.Event;
 @Data
 public class ProcessStartEvent extends Event{
 
-
 	private String time;
-	private String userId;
 	
 }

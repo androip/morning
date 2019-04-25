@@ -13,6 +13,7 @@ public abstract class Event {
 	private String processInstanceId;
 	private String nodeInstanceId;
 	private String nodeTId;
+	private String userId;
 	private EVENT_TYPE eventType;
 	
 	

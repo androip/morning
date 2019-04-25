@@ -1,4 +1,4 @@
-package morning.entity;
+package morning.entity.process;
 
 import java.util.UUID;
 

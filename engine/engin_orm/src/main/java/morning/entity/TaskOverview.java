@@ -7,11 +7,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class NodeInstance {
+public class TaskOverview {
 
-	private String nodeInsId;
-	private String nodeTemplateId;
+	private String userId;
 	private String processInsId;
-	private String nodeType;
-	private String nodeStatus;
+	private String processNodeInsId;
+	private Integer taskStatus;
+	
 }

@@ -9,8 +9,8 @@ import org.springframework.stereotype.Service;
 
 import morining.api.IProcessMetaService;
 import morining.dto.proc.ProcessTemplateDTO;
-import morning.entity.NodeInstance;
-import morning.entity.ProcessInstance;
+import morning.entity.process.NodeInstance;
+import morning.entity.process.ProcessInstance;
 import morning.event.EVENT_TYPE;
 import morning.event.Event;
 import morning.repo.NodeInstanceDao;
@@ -18,6 +18,7 @@ import morning.repo.ProcessInstanceDao;
 import morning.service.event.ProcessEventSupport;
 import morning.service.event.ProcessStartEvent;
 import morning.service.event.exception.EventException;
+import morning.service.event.listener.CreateNodeInstanceListener;
 import morning.service.exception.MorningException;
 import morning.service.util.TimeUtil;
 import morning.vo.STATUS;
@@ -35,6 +36,8 @@ public class EngineService {
 	private NodeInstanceDao nodeInstanceDao;
 	@Autowired
 	private ProcessEventSupport eventSupport;
+	@Autowired
+	private CreateNodeInstanceListener createNodeInstanceListener;
 	
 	public String startProcess(String processTemplateId,String userId) {
 		//调用Meta api 查询流程模版
@@ -44,6 +47,8 @@ public class EngineService {
 				processTmpDto.getProcessName(),
 				TimeUtil.getSystemTime(),
 				userId);
+		//注册监听器
+		eventSupport.registerListener(createNodeInstanceListener);
 		//创建Start节点，并初始化状态为Running
 		NodeInstance startNodeIns = procIns.createNodeInstance(processTmpDto.startNodeTmpId(),
 				processTmpDto.getNodeType(processTmpDto.startNodeTmpId()),STATUS.RUNNING.getValue());
@@ -52,12 +57,13 @@ public class EngineService {
 		nodeInstanceDao.save(startNodeIns);
 		
 		// 创建事件
-		Event event = new ProcessStartEvent(TimeUtil.getSystemTime(),userId);
+		Event event = new ProcessStartEvent(TimeUtil.getSystemTime());
 		eventSupport.initEvent(event,processTmpDto.getProcessTemplateId(),
 				procIns.getProcessInsId(),
 				startNodeIns.getNodeInsId(),
 				startNodeIns.getNodeTemplateId(),
-				EVENT_TYPE.proc_start
+				EVENT_TYPE.proc_start,
+				userId
 				);
 		try {
 			eventSupport.dispatchEvent(event);

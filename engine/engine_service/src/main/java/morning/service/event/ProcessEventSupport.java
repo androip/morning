@@ -1,7 +1,10 @@
 package morning.service.event;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,19 +22,39 @@ public class ProcessEventSupport {
 
 	private static Logger logger = LoggerFactory.getLogger(ProcessEventSupport.class);
 	
-	private List<EventListener> listenerList;
-	private Map<EVENT_TYPE,List<EventListener>> typedListeners;
-	private Event event;
+	private List<EventListener> listenerList = new ArrayList<EventListener>();
+	private Map<EVENT_TYPE,List<EventListener>> typedListeners = new HashMap<EVENT_TYPE,List<EventListener>>();
 	
-	public void registerObserver(EventListener listener) {
-		// TODO Auto-generated method stub
-
+	synchronized public void registerListener(EventListener listener) {
+		if(null != listener) {
+			if(!listenerList.contains(listener)) {
+				listenerList.add(listener);
+			}
+		}
 	}
-	public void registerObserver(EventListener listener,EVENT_TYPE eventType) {
-		// TODO Auto-generated method stub
-		
+	synchronized public void registerListener(EventListener listener,EVENT_TYPE...eventType) {
+		if(null != listener) {
+			if(eventType == null || eventType.length == 0 ) {
+				registerListener(listener);		//注册全局事件监听器
+			}else {
+				for(EVENT_TYPE type :eventType) {
+					addTypedEventListener(listener,type);//注册具体类型事件监听器
+				}
+			}
+		}
 	}
+	
 
+	synchronized private void addTypedEventListener(EventListener listener, EVENT_TYPE type) {
+		List<EventListener> listeners = typedListeners.get(type);
+		if(listeners == null) {
+			listeners = new CopyOnWriteArrayList<EventListener>();
+			typedListeners.put(type, listeners);
+		}
+		if(!listeners.contains(listener)){
+			listeners.add(listener);
+		}
+	}
 	public void removeObserver(EventListener listener) {
 		// TODO Auto-generated method stub
 
@@ -47,17 +70,17 @@ public class ProcessEventSupport {
 		if(event == null || event.getEventType() == null) {
 			throw new EventException("Event can not be null");
 		}
-//		if(!listenerList.isEmpty()) {
-//			for(EventListener listener:listenerList) {
-//				dispatchEvent(event,listener);
-//			}
-//		}
-//		List<EventListener> typed = typedListeners.get(event.getEventType());
-//		if(typed != null && typed.isEmpty()) {
-//			for(EventListener listener: typed) {
-//				dispatchEvent(event,listener);
-//			}
-//		}
+		if(!listenerList.isEmpty()) {
+			for(EventListener listener:listenerList) {
+				dispatchEvent(event,listener);
+			}
+		}
+		List<EventListener> typed = typedListeners.get(event.getEventType());
+		if(typed != null && typed.isEmpty()) {
+			for(EventListener listener: typed) {
+				dispatchEvent(event,listener);
+			}
+		}
 	}
 	private void dispatchEvent(Event event , EventListener listener) throws MorningException {
 		try {
@@ -79,14 +102,16 @@ public class ProcessEventSupport {
 	 * @param nodeInsId
 	 * @param nodeTemplateId
 	 * @param eventType
+	 * @param userId 
 	 */
 	public void initEvent(Event event, String procTmpId, String processInsId, String nodeInsId, String nodeTemplateId,
-			EVENT_TYPE eventType) {
+			EVENT_TYPE eventType, String userId) {
 		event.setProcessTId(procTmpId);
 		event.setProcessInstanceId(processInsId);
 		event.setNodeTId(nodeTemplateId);
 		event.setNodeInstanceId(nodeInsId);
 		event.setEventType(eventType);
+		event.setUserId(userId);
 	}
 
 }
