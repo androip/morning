@@ -1,6 +1,7 @@
 package morining.dto.proc;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
@@ -28,7 +29,7 @@ public class ProcessTemplateDTO implements Serializable{
 	private List<GatewayNodeTemplateDto> gatewayNodeTemplateDtoList;
 	private List<EdgeDto> edgeDtoList;
 	
-	public String startNodeTmpId() {
+	public String extractStartNodeTmpId() {
 		for(NodeTemplateDto dto:nodeTemplateDtoList) {
 			if(dto.getNodeTemplateType().equals("Start")) {
 				return dto.getNodeTemplateId();
@@ -45,6 +46,30 @@ public class ProcessTemplateDTO implements Serializable{
 			}
 		}
 		return null;
+	}
+
+
+	public NodeTemplateDto getNodeTemplateById(String nodeTid) {
+		for(NodeTemplateDto dto : nodeTemplateDtoList) {
+			if(nodeTid.equals(dto.getNodeTemplateId()))
+				return dto;
+		}
+		return null;
+	}
+
+
+	public List<EdgeDto> getEdgeDtoByFrom(String nodeTid) {
+		
+		return new ArrayList<EdgeDto>() {
+			private static final long serialVersionUID = -1365629067842162842L;
+
+		{
+			edgeDtoList.forEach(dto->{
+				if(dto.getFrom().equals(nodeTid)) {
+					add(dto);
+				}
+			});
+		}};
 	}
 
 }

@@ -26,7 +26,7 @@ public class NodeInstanceDao {
 		INSTER_SQL.append("'").append(nodeIns.getNodeStatus()).append("'");
 		INSTER_SQL.append(")");
 		String sql = INSTER_SQL.toString();
-		logger.debug("SQL:"+sql);
+		logger.debug("NodeInstance SQL:"+sql);
 		jdbcTemplate.execute(sql);
 		
 	}

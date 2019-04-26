@@ -122,7 +122,7 @@ public class ProcessTemplateDtoFactory {
 
 		{
 			edgeList.forEach(edge->{
-				add(new EdgeDto(edge.getId(),edge.getFrom(),edge.getTo()));
+				add(new EdgeDto(edge.getProcessTId(),edge.getId(),edge.getFrom(),edge.getTo()));
 			});
 		}};
 	}

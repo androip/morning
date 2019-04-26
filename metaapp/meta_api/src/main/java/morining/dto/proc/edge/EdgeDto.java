@@ -15,6 +15,7 @@ public class EdgeDto implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = -4692319379365699700L;
+	private String processTId;
 	private String id;
 	private String from;
 	private String to;

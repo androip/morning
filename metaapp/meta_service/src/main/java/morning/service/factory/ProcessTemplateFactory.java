@@ -89,7 +89,7 @@ public class ProcessTemplateFactory {
 				if(dto.getId() == null) {
 					dto.setId(UUID.randomUUID().toString());
 				}
-				add(new Edge(dto.getId(),dto.getFrom(),dto.getTo()));
+				add(new Edge(dto.getProcessTId(),dto.getId(),dto.getFrom(),dto.getTo()));
 			});
 			
 		}};
