@@ -40,7 +40,7 @@ public class CreateNodeInstanceListener implements EventListener{
 
 	@Override
 	public boolean isFailOnException() {
-		return false;
+		return true;
 	}
 
 }
