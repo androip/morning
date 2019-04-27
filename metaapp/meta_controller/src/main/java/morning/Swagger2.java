@@ -33,7 +33,7 @@ public class Swagger2 {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("morning"))
+                .apis(RequestHandlerSelectors.basePackage("morning.meta_controller"))
                 .paths(PathSelectors.any())
                 .build();
 //                .globalOperationParameters(pars)  ;

@@ -12,8 +12,9 @@ public interface EventListener {
 	/**
 	 * handle event
 	 * @param event
+	 * @throws Exception 
 	 */
-	public void onEvent(Event event);
+	public void onEvent(Event event) throws Exception;
 	/**
 	 * Whether an exception needs to be handled
 	 * @return

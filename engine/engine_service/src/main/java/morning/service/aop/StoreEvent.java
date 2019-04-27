@@ -38,8 +38,8 @@ public class StoreEvent {
 //        MethodSignature methodSignature = (MethodSignature) signature;
         //获取到方法的所有参数名称的字符串数组
 //        String[] parameterNames = methodSignature.getParameterNames();
+		logger.info("[ {} ] stored",args[0]);
         mongoTemplate.save(args[0], "event_store");
-        logger.info("[ {} ] stored",args[0]);
 //        for (int i =0 ,len=parameterNames.length;i < len ;i++){
 //        		logger.info("参数名："+ parameterNames[i] + " = " +JSON.toJSONString(args[i]));
 //        		

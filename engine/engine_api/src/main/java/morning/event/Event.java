@@ -14,6 +14,9 @@ public abstract class Event {
 	private String nodeInstanceId;
 	private String nodeTId;
 	private String userId;
+	private String createTime;
+	private String processName;
+	private String nodeName;
 	private EVENT_TYPE eventType;
 	
 	

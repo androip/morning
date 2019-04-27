@@ -102,15 +102,21 @@ public class ProcessEventSupport {
 	 * @param nodeTemplateId
 	 * @param eventType
 	 * @param userId 
+	 * @param createTime 
+	 * @param processName 
+	 * @param nodeName 
 	 */
 	public void initEvent(Event event, String procTmpId, String processInsId, String nodeInsId, String nodeTemplateId,
-			EVENT_TYPE eventType, String userId) {
+			EVENT_TYPE eventType, String userId, String createTime, String processName, String nodeName) {
 		event.setProcessTId(procTmpId);
 		event.setProcessInstanceId(processInsId);
 		event.setNodeTId(nodeTemplateId);
 		event.setNodeInstanceId(nodeInsId);
 		event.setEventType(eventType);
 		event.setUserId(userId);
+		event.setCreateTime(createTime);
+		event.setProcessName(processName);
+		event.setNodeName(nodeName);
 	}
 
 }

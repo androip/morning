@@ -10,6 +10,7 @@ import com.alibaba.fastjson.JSON;
 import morning.entity.TaskOverview;
 import morning.event.Event;
 import morning.event.EventListener;
+import morning.exception.DBException;
 import morning.repo.TaskOverviewDao;
 import morning.vo.TASK_STATUS;
 
@@ -23,12 +24,15 @@ public class CreateNodeInstanceListener implements EventListener{
 	private TaskOverviewDao taskOverviewDao;
 	
 	@Override
-	public void onEvent(Event event) {
+	public void onEvent(Event event) throws DBException {
 		logger.debug("On listener: {}",JSON.toJSONString(event));
 		// 创建任务一览记录
 		TaskOverview taskOV = new TaskOverview(event.getUserId(),
 				event.getProcessTId(),
 				event.getNodeInstanceId(),
+				event.getCreateTime(),
+				event.getNodeName(),
+				event.getProcessName(),
 				TASK_STATUS.Start.getCode());
 		// 把新创建的节点消息保存到“任务一览”
 		taskOverviewDao.save(taskOV);

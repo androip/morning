@@ -21,13 +21,14 @@ public class ProcessInstance {
 	private String createUserId;
 	private String status;
 	
-	public NodeInstance createNodeInstance(String nodeTempId,String type,String status) {
+	public NodeInstance createNodeInstance(String nodeTempId,String type,String status, String nodeName) {
 		NodeInstance nodeIns = new NodeInstance();
 		nodeIns.setNodeInsId(UUID.randomUUID().toString());
 		nodeIns.setNodeTemplateId(nodeTempId);
 		nodeIns.setNodeType(type);
 		nodeIns.setProcessInsId(this.processInsId);
 		nodeIns.setNodeStatus(status);
+		nodeIns.setNodeName(nodeName);
 		return nodeIns;
 	}
 	

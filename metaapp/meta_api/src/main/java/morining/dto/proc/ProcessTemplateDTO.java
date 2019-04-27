@@ -39,6 +39,11 @@ public class ProcessTemplateDTO implements Serializable{
 	}
 
 
+	/**
+	 * 根据节点TID取得节点类型
+	 * @param nodeTid
+	 * @return
+	 */
 	public String getNodeType(String nodeTid) {
 		for(NodeTemplateDto dto:nodeTemplateDtoList) {
 			if(dto.getNodeTemplateId().equals(nodeTid)) {
@@ -70,6 +75,17 @@ public class ProcessTemplateDTO implements Serializable{
 				}
 			});
 		}};
+	}
+
+
+	public NodeTemplateDto extractStartNodeTmp() {
+		for(NodeTemplateDto dto:nodeTemplateDtoList) {
+			if(dto.getNodeTemplateType().equals("Start")) {
+				return dto;
+			}
+		}
+		return null;
+		
 	}
 
 }

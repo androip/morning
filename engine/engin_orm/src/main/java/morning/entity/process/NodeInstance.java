@@ -12,6 +12,7 @@ public class NodeInstance {
 	private String nodeInsId;
 	private String nodeTemplateId;
 	private String processInsId;
+	private String nodeName;
 	private String nodeType;
 	private String nodeStatus;
 }

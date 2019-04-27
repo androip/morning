@@ -13,6 +13,8 @@ import morining.api.IProcessMetaService;
 import morining.dto.proc.ProcessTemplateDTO;
 import morining.dto.proc.edge.EdgeDto;
 import morining.dto.proc.node.NodeTemplateDto;
+import morning.dto.TaskOverviewDto;
+import morning.entity.TaskOverview;
 import morning.entity.process.EdgeIns;
 import morning.entity.process.NodeInstance;
 import morning.entity.process.ProcessInstance;
@@ -21,6 +23,7 @@ import morning.event.Event;
 import morning.repo.EdgeInstanceDao;
 import morning.repo.NodeInstanceDao;
 import morning.repo.ProcessInstanceDao;
+import morning.repo.TaskOverviewDao;
 import morning.service.event.ProcessEventSupport;
 import morning.service.event.ProcessStartEvent;
 import morning.service.event.exception.EventException;
@@ -28,6 +31,7 @@ import morning.service.event.listener.CreateNodeInstanceListener;
 import morning.service.exception.MorningException;
 import morning.service.util.TimeUtil;
 import morning.vo.STATUS;
+import morning.vo.TASK_STATUS;
 
 @Service
 public class EngineService {
@@ -46,6 +50,8 @@ public class EngineService {
 	private ProcessEventSupport eventSupport;
 	@Autowired
 	private CreateNodeInstanceListener createNodeInstanceListener;
+	@Autowired
+	private TaskOverviewDao taskOverviewDao;
 	
 	public String startProcess(String processTemplateId,String userId) {
 		//调用Meta api 查询流程模版
@@ -59,22 +65,26 @@ public class EngineService {
 		//注册监听器
 		eventSupport.registerListener(createNodeInstanceListener);
 		//创建Start节点，并初始化状态为Running
-		NodeInstance startNodeIns = procIns.createNodeInstance(processTmpDto.extractStartNodeTmpId(),
-				processTmpDto.getNodeType(processTmpDto.extractStartNodeTmpId()),STATUS.RUNNING.getValue());
+		NodeTemplateDto nodeTmpDto = processTmpDto.extractStartNodeTmp();
+		NodeInstance startNodeIns = procIns.createNodeInstance(nodeTmpDto.getNodeTemplateId(),
+				processTmpDto.getNodeType(nodeTmpDto.getNodeTemplateId()),STATUS.RUNNING.getValue(),nodeTmpDto.getNodeTemplateName());
 		//持久化流程实例和START节点实例 
 		processInstanceDao.save(procIns);
 		nodeInstanceDao.save(startNodeIns);
-		//TODO 创建有向弧实例并持久化
+		// 创建有向弧实例并持久化
 		List<EdgeIns> edgeList = createDirectedArcByNodeIns(processTmpDto,startNodeIns);
 		edgeInstanceDao.save(edgeList);
 		// 创建事件
-		Event event = new ProcessStartEvent(TimeUtil.getSystemTime());
+		Event event = new ProcessStartEvent("Start process");
 		eventSupport.initEvent(event,processTmpDto.getProcessTemplateId(),
 				procIns.getProcessInsId(),
 				startNodeIns.getNodeInsId(),
 				startNodeIns.getNodeTemplateId(),
 				EVENT_TYPE.proc_start,
-				userId
+				userId,
+				TimeUtil.getSystemTime(),
+				procIns.getProcessName(),
+				startNodeIns.getNodeName()
 				);
 		try {
 			// 发送事件（需持久化）->待办事项
@@ -122,6 +132,18 @@ public class EngineService {
 		procIns.setUpdateTime(systemTime);
 		procIns.setStatus(STATUS.READY.getValue());
 		return procIns;
+	}
+
+	public List<TaskOverviewDto> getTaskOverviewList(String userId) {
+		List<TaskOverview> tasks = taskOverviewDao.queryByUserId(userId);
+		List<TaskOverviewDto> dtolist = new ArrayList<TaskOverviewDto>();
+		for(TaskOverview view : tasks)	{
+			TaskOverviewDto dto = new TaskOverviewDto(view.getTaskName(),
+					view.getCreateTime(),
+					TASK_STATUS.getBycode(view.getTaskStatus()).toString());
+			dtolist.add(dto);
+		}
+		return dtolist;
 	}
 
 	
