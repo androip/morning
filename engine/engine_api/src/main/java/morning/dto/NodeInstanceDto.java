@@ -6,23 +6,20 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class TaskOverviewDto implements Serializable{
+public class NodeInstanceDto implements Serializable{
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 8230172459995520260L;
-
-	private String taskName;
-	private String createTime;
-	private String taskStatus;
+	private static final long serialVersionUID = -849217651521149178L;
 	private String nodeInsId;
-	private String nodeTId;
+	private String nodeTemplateId;
 	private String processInsId;
-	private String processTId;
+	private String nodeName;
+	private String nodeType;
+	private String nodeStatus;
 	
 }

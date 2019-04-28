@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public abstract class Event {
+public class Event {
 
 	private String processTId;
 	private String processInstanceId;

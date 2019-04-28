@@ -1,18 +1,20 @@
 package morning.service.aop;
 
+import java.util.List;
+
 import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
-import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
 
-import com.alibaba.fastjson.JSON;
+import morning.event.Event;
 
 @Aspect
 @Component
@@ -45,6 +47,15 @@ public class StoreEvent {
 //        		
 //        }
     }
+
+	public List<Event> getEventById(String nodeInstanceId) {
+		Query query = new Query();
+		Criteria cri = new Criteria();
+		cri.where("1").is("1").and("nodeInstanceId").is(nodeInstanceId);
+		query.addCriteria(cri);
+		return mongoTemplate.find(query, Event.class);
+	
+	}
 
 
 	

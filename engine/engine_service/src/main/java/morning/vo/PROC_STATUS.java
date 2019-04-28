@@ -1,11 +1,11 @@
 package morning.vo;
 
-public enum STATUS {
+public enum PROC_STATUS {
 	READY("Ready"), RUNNING("Running");
 
 	private String strVal;
 	
-	STATUS(String val) {
+	PROC_STATUS(String val) {
 		this.strVal = val;
 	}
 

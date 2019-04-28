@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import morining.dto.proc.ProcessTemplateDTO;
+import morining.dto.proc.node.NodeTemplateDto;
 import morining.exception.MetaServiceException;
 import morning.service.impl.MetaServiceImpl;
 
@@ -69,6 +70,12 @@ public class MetaController {
 	public @ResponseBody List<ProcessTemplateDTO> getProcessTemplateListBy(HttpServletRequest request) {
 		Map<String,Object> requestMap = getParams(request);
 		return metaService.getProcessTemplateLByCondition(requestMap);
+	}
+	
+	@ApiOperation(value = "根据nodetId查询节点模版", notes = "")
+	@RequestMapping(value = {"/processtemplate/{processTid}/nodetmpl/{nodeTid}"}, method = RequestMethod.GET)
+	public @ResponseBody NodeTemplateDto getProcessTemplateListBy(@PathVariable String processTid,@PathVariable String nodeTid) throws MetaServiceException {
+		return metaService.getNodeTemplateLByNodeTid(processTid,nodeTid);
 	}
 	
 	private Map<String,Object> getParams(HttpServletRequest request) {  

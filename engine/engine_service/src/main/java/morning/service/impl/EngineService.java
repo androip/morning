@@ -8,11 +8,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import morining.api.IProcessMetaService;
 import morining.dto.proc.ProcessTemplateDTO;
 import morining.dto.proc.edge.EdgeDto;
 import morining.dto.proc.node.NodeTemplateDto;
+import morining.vo.NODE_TYPE;
+import morning.dto.NodeInstanceDto;
 import morning.dto.TaskOverviewDto;
 import morning.entity.TaskOverview;
 import morning.entity.process.EdgeIns;
@@ -20,6 +21,7 @@ import morning.entity.process.NodeInstance;
 import morning.entity.process.ProcessInstance;
 import morning.event.EVENT_TYPE;
 import morning.event.Event;
+import morning.exception.DBException;
 import morning.repo.EdgeInstanceDao;
 import morning.repo.NodeInstanceDao;
 import morning.repo.ProcessInstanceDao;
@@ -27,10 +29,10 @@ import morning.repo.TaskOverviewDao;
 import morning.service.event.ProcessEventSupport;
 import morning.service.event.ProcessStartEvent;
 import morning.service.event.exception.EventException;
-import morning.service.event.listener.CreateNodeInstanceListener;
+import morning.service.event.listener.ProcessStartListener;
 import morning.service.exception.MorningException;
 import morning.service.util.TimeUtil;
-import morning.vo.STATUS;
+import morning.vo.PROC_STATUS;
 import morning.vo.TASK_STATUS;
 
 @Service
@@ -49,7 +51,7 @@ public class EngineService {
 	@Autowired
 	private ProcessEventSupport eventSupport;
 	@Autowired
-	private CreateNodeInstanceListener createNodeInstanceListener;
+	private ProcessStartListener processStartListener;
 	@Autowired
 	private TaskOverviewDao taskOverviewDao;
 	
@@ -63,19 +65,29 @@ public class EngineService {
 				TimeUtil.getSystemTime(),
 				userId);
 		//注册监听器
-		eventSupport.registerListener(createNodeInstanceListener);
+		eventSupport.registerListener(processStartListener);
 		//创建Start节点，并初始化状态为Running
-		NodeTemplateDto nodeTmpDto = processTmpDto.extractStartNodeTmp();
-		NodeInstance startNodeIns = procIns.createNodeInstance(nodeTmpDto.getNodeTemplateId(),
-				processTmpDto.getNodeType(nodeTmpDto.getNodeTemplateId()),STATUS.RUNNING.getValue(),nodeTmpDto.getNodeTemplateName());
+		NodeTemplateDto startNodeTmpDto = processTmpDto.extractStartNodeTmp();
+		NodeInstance startNodeIns = procIns.createNodeInstance(startNodeTmpDto.getNodeTemplateId(),
+				processTmpDto.getNodeType(startNodeTmpDto.getNodeTemplateId()),PROC_STATUS.RUNNING.getValue(),startNodeTmpDto.getNodeTemplateName());
 		//持久化流程实例和START节点实例 
 		processInstanceDao.save(procIns);
 		nodeInstanceDao.save(startNodeIns);
 		// 创建有向弧实例并持久化
 		List<EdgeIns> edgeList = createDirectedArcByNodeIns(processTmpDto,startNodeIns);
-		edgeInstanceDao.save(edgeList);
+		try {
+			edgeInstanceDao.save(edgeList);
+		} catch (DBException e1) {
+			e1.printStackTrace();
+		}
+		List<String> toNodeTids = new ArrayList<String>();
+		List<String> toNodeInsIds = new ArrayList<String>();
+		// 从有向弧取出所有的目标节点模版ID和节点实例ID
+		extractToNodeIDs(edgeList,toNodeTids,toNodeInsIds);
 		// 创建事件
-		Event event = new ProcessStartEvent("Start process");
+		Event event = new ProcessStartEvent("Start process",
+				toNodeTids,
+				toNodeInsIds);
 		eventSupport.initEvent(event,processTmpDto.getProcessTemplateId(),
 				procIns.getProcessInsId(),
 				startNodeIns.getNodeInsId(),
@@ -96,6 +108,20 @@ public class EngineService {
 		}
 		
 		return procIns.getProcessInsId();
+	}
+
+	/**
+	 * 提取有向弧的目标模板节点和实例节点ID
+	 * @param edgeList
+	 * @param toNodeTids
+	 * @param toNodeInsIds
+	 */
+	private void extractToNodeIDs(List<EdgeIns> edgeList, List<String> toNodeTids, List<String> toNodeInsIds) {
+		for(EdgeIns edge:edgeList) {
+			toNodeTids.add(edge.getToNodeTId());
+			toNodeInsIds.add(edge.getFromNodeInsId());
+		}
+		
 	}
 
 	/**
@@ -130,7 +156,7 @@ public class EngineService {
 		procIns.setProcessName(processName);
 		procIns.setCreateUserId(userId);
 		procIns.setUpdateTime(systemTime);
-		procIns.setStatus(STATUS.READY.getValue());
+		procIns.setStatus(PROC_STATUS.READY.getValue());
 		return procIns;
 	}
 
@@ -140,10 +166,20 @@ public class EngineService {
 		for(TaskOverview view : tasks)	{
 			TaskOverviewDto dto = new TaskOverviewDto(view.getTaskName(),
 					view.getCreateTime(),
-					TASK_STATUS.getBycode(view.getTaskStatus()).toString());
+					TASK_STATUS.getBycode(view.getTaskStatus()).toString(),
+					view.getProcessNodeInsId(),
+					view.getNodeTId(),
+					view.getProcessInsId(),
+					view.getProcesssTId()
+					);
 			dtolist.add(dto);
 		}
 		return dtolist;
+	}
+
+	public NodeInstanceDto getNodeInstance(String nodeinsId) {
+		// TODO 
+		return null;
 	}
 
 	

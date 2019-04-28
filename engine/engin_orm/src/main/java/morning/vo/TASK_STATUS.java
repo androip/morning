@@ -2,7 +2,7 @@ package morning.vo;
 
 public enum TASK_STATUS {
 
-	Start(0),
+	Ready(0),
 	Runing(1),
 	End(2);
 	

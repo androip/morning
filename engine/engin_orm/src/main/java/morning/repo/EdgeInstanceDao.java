@@ -9,6 +9,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import morning.entity.process.EdgeIns;
+import morning.exception.DBException;
 
 @Component
 public class EdgeInstanceDao {
@@ -18,7 +19,7 @@ public class EdgeInstanceDao {
 	private JdbcTemplate jdbcTemplate;
 	
 	
-	public void save(List<EdgeIns> edgeList) {
+	public void save(List<EdgeIns> edgeList) throws DBException {
 		StringBuffer INSTER_SQL = new StringBuffer("INSERT INTO EdgeInstance");
 		INSTER_SQL.append("(processInsId,processTId,fromNodeInsId,fromNodeTId,toNodeInsId,toNodeTId)");
 		INSTER_SQL.append("VALUES");
@@ -35,7 +36,12 @@ public class EdgeInstanceDao {
 		}
 		String sql = INSTER_SQL.toString();
 		logger.debug("EdgeInstance {}",sql.substring(0,sql.length()-1));
-		jdbcTemplate.execute(sql.substring(0,sql.length()-1));
+		try {
+			jdbcTemplate.execute(sql.substring(0,sql.length()-1));
+		}catch (Exception e){
+			throw new DBException(e);
+		}
+		
 		
 	}
 
