@@ -1,8 +1,11 @@
 package morning.repo;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
@@ -32,6 +35,15 @@ public class ProcessInstanceDao {
 		logger.debug("SQL:"+sql);
 		jdbcTemplate.execute(sql);
 		
+	}
+
+	public ProcessInstance getById(String processInsId) {
+		StringBuffer INSTER_SQL = new StringBuffer("select * from ProcessInstance\n" + 
+				"WHERE processInsId = ?");
+		String sql = INSTER_SQL.toString();
+		logger.debug("TaskOverview Query SQL: {}",sql);
+		List<ProcessInstance> reslist = jdbcTemplate.query(sql, new String[] {processInsId},new BeanPropertyRowMapper<ProcessInstance>(ProcessInstance.class));
+		return reslist.get(0);
 	}
 
 }

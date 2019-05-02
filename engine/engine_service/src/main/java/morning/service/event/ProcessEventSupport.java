@@ -15,7 +15,6 @@ import morning.event.Event;
 import morning.event.EventListener;
 import morning.service.event.exception.EventException;
 import morning.service.exception.MorningException;
-import morning.service.impl.EngineService;
 
 @Component
 public class ProcessEventSupport {
@@ -25,6 +24,10 @@ public class ProcessEventSupport {
 	private List<EventListener> listenerList = new ArrayList<EventListener>();
 	private Map<EVENT_TYPE,List<EventListener>> typedListeners = new HashMap<EVENT_TYPE,List<EventListener>>();
 	
+	/**
+	 * 注册全局事件监听器
+	 * @param listener
+	 */
 	synchronized public void registerListener(EventListener listener) {
 		if(null != listener) {
 			if(!listenerList.contains(listener)) {
@@ -32,7 +35,14 @@ public class ProcessEventSupport {
 			}
 		}
 	}
+	
+	/**
+	 * 根据事件类型注册事件监听器
+	 * @param listener
+	 * @param eventType
+	 */
 	synchronized public void registerListener(EventListener listener,EVENT_TYPE...eventType) {
+		logger.debug("before registerListener typedListeners {}",typedListeners);
 		if(null != listener) {
 			if(eventType == null || eventType.length == 0 ) {
 				registerListener(listener);		//注册全局事件监听器
@@ -42,6 +52,7 @@ public class ProcessEventSupport {
 				}
 			}
 		}
+		logger.debug("after registerListener typedListeners {}",typedListeners);
 	}
 	
 
@@ -55,12 +66,13 @@ public class ProcessEventSupport {
 			listeners.add(listener);
 		}
 	}
+	
 	public void removeObserver(EventListener listener) {
 		listenerList.remove(listener);
 	}
 
 	/**
-	 * Forward the event
+	 * Forward All the event
 	 * @param event
 	 * @throws EventException
 	 * @throws MorningException 
@@ -83,9 +95,11 @@ public class ProcessEventSupport {
 	}
 	private void dispatchEvent(Event event , EventListener listener) throws MorningException {
 		try {
+			logger.debug("listener {} ",listener);
 			listener.onEvent(event);
 		} catch(Throwable t) {
 			if(listener.isFailOnException()) {
+				t.printStackTrace();
 				throw new MorningException("Exception while exeuting event - listener",t);
 			}else {
 				logger.error("Exception while exeuting event - listener");
@@ -106,8 +120,9 @@ public class ProcessEventSupport {
 	 * @param processName 
 	 * @param nodeName 
 	 */
-	public void initEvent(Event event, String procTmpId, String processInsId, String nodeInsId, String nodeTemplateId,
+	public ProcessEventSupport initEvent(Event event, String procTmpId, String processInsId, String nodeInsId, String nodeTemplateId,
 			EVENT_TYPE eventType, String userId, String createTime, String processName, String nodeName) {
+		logger.debug("before event{}",event);
 		event.setProcessTId(procTmpId);
 		event.setProcessInstanceId(processInsId);
 		event.setNodeTId(nodeTemplateId);
@@ -117,6 +132,32 @@ public class ProcessEventSupport {
 		event.setCreateTime(createTime);
 		event.setProcessName(processName);
 		event.setNodeName(nodeName);
+		logger.debug("after event{}",event);
+		return this;
+	}
+	
+	/**
+	 * 只转发指定类型的事件
+	 * @param event
+	 * @param nodeEnd
+	 * @throws EventException
+	 * @throws MorningException
+	 */
+	public void dispatchEvent(Event event, EVENT_TYPE eventType) throws EventException, MorningException {
+		logger.debug("dispatchEvent {} type {}",event,eventType);
+		if(event == null || event.getEventType() == null) {
+			throw new EventException("Event can not be null");
+		}
+		logger.debug("typedListeners {}",typedListeners);
+		List<EventListener> typed = typedListeners.get(eventType);
+		logger.debug("typedlist {}",typed);
+		if(typed != null && !typed.isEmpty()) {
+			logger.debug("ni ma bi  {}");
+			for(EventListener listener: typed) {
+				logger.debug("caonima  {}",listener);
+				dispatchEvent(event,listener);
+			}
+		}
 	}
 
 }

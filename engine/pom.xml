@@ -21,17 +21,11 @@
   	<module>engine_web</module>
   	<module>engine_api</module>
   	<module>engine_service</module>
-  	
   	<module>engine_test</module>
     <module>engin_orm</module>
   </modules>
   
   <dependencies>
-    <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-test</artifactId>
-        <scope>test</scope>
-    </dependency>
     <dependency>
 	    <groupId>org.projectlombok</groupId>
 	    <artifactId>lombok</artifactId>

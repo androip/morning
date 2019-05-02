@@ -19,7 +19,7 @@ public class TaskOverviewDto implements Serializable{
 
 	private String taskName;
 	private String createTime;
-	private String taskStatus;
+	private Integer taskStatus;
 	private String nodeInsId;
 	private String nodeTId;
 	private String processInsId;

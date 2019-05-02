@@ -50,10 +50,10 @@ public class TaskOverviewDao {
 	}
 
 	public List<TaskOverview> queryByUserId(String userId) {
-		StringBuffer INSTER_SQL = new StringBuffer("SELECT * FROM TaskOverview");
-		INSTER_SQL.append(" WHERE 1=1 ").append(" AND");
-		INSTER_SQL.append(" userId=?");
-		String sql = INSTER_SQL.toString();
+		StringBuffer SELECT_SQL = new StringBuffer("SELECT * FROM TaskOverview");
+		SELECT_SQL.append(" WHERE 1=1 ").append(" AND");
+		SELECT_SQL.append(" userId=?");
+		String sql = SELECT_SQL.toString();
 		logger.debug("TaskOverview Query SQL: {}",sql);
 		List<TaskOverview> reslist = new ArrayList<TaskOverview>();
 		reslist = jdbcTemplate.query(sql, new String[] {userId},new BeanPropertyRowMapper<TaskOverview>(TaskOverview.class));
@@ -61,6 +61,7 @@ public class TaskOverviewDao {
 	}
 
 	public void save(List<TaskOverview> taskOtaskOVs) throws DBException {
+		logger.info("save all TaskOverview {}",taskOtaskOVs);
 		StringBuffer INSTER_SQL = new StringBuffer("INSERT INTO TaskOverview");
 		INSTER_SQL.append("(userId,processInsId,processNodeInsId,createTime,taskName,processName,taskStatus,nodeTId,processsTId)");
 		INSTER_SQL.append("VALUES");

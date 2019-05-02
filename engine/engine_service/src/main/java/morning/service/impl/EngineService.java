@@ -2,12 +2,12 @@ package morning.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import morining.api.IProcessMetaService;
 import morining.dto.proc.ProcessTemplateDTO;
 import morining.dto.proc.edge.EdgeDto;
@@ -17,21 +17,26 @@ import morning.dto.NodeInstanceDto;
 import morning.dto.TaskOverviewDto;
 import morning.entity.TaskOverview;
 import morning.entity.process.EdgeIns;
+import morning.entity.process.FormInstance;
 import morning.entity.process.NodeInstance;
 import morning.entity.process.ProcessInstance;
 import morning.event.EVENT_TYPE;
 import morning.event.Event;
 import morning.exception.DBException;
 import morning.repo.EdgeInstanceDao;
+import morning.repo.FormInstanceDao;
 import morning.repo.NodeInstanceDao;
 import morning.repo.ProcessInstanceDao;
 import morning.repo.TaskOverviewDao;
 import morning.service.event.ProcessEventSupport;
 import morning.service.event.ProcessStartEvent;
+import morning.service.event.TaskSubmitEvent;
 import morning.service.event.exception.EventException;
 import morning.service.event.listener.ProcessStartListener;
+import morning.service.event.listener.TaskSubmitListener;
 import morning.service.exception.MorningException;
 import morning.service.util.TimeUtil;
+import morning.util.IdGenerator;
 import morning.vo.PROC_STATUS;
 import morning.vo.TASK_STATUS;
 
@@ -53,8 +58,13 @@ public class EngineService {
 	@Autowired
 	private ProcessStartListener processStartListener;
 	@Autowired
+	private TaskSubmitListener taskSubmitListener;
+	@Autowired
 	private TaskOverviewDao taskOverviewDao;
-	
+	@Autowired
+	private FormInstanceDao formInstanceDao;
+
+
 	public String startProcess(String processTemplateId,String userId) {
 		//调用Meta api 查询流程模版
 		ProcessTemplateDTO processTmpDto = processMetaService.getProcessTemplate(processTemplateId);
@@ -65,11 +75,14 @@ public class EngineService {
 				TimeUtil.getSystemTime(),
 				userId);
 		//注册监听器
-		eventSupport.registerListener(processStartListener);
+		eventSupport.registerListener(processStartListener,EVENT_TYPE.proc_start);
 		//创建Start节点，并初始化状态为Running
 		NodeTemplateDto startNodeTmpDto = processTmpDto.extractStartNodeTmp();
 		NodeInstance startNodeIns = procIns.createNodeInstance(startNodeTmpDto.getNodeTemplateId(),
-				processTmpDto.getNodeType(startNodeTmpDto.getNodeTemplateId()),PROC_STATUS.RUNNING.getValue(),startNodeTmpDto.getNodeTemplateName());
+																processTmpDto.getNodeType(startNodeTmpDto.getNodeTemplateId()),
+																TASK_STATUS.Runing.getCode(),
+																startNodeTmpDto.getNodeTemplateName(),
+																userId);
 		//持久化流程实例和START节点实例 
 		processInstanceDao.save(procIns);
 		nodeInstanceDao.save(startNodeIns);
@@ -84,29 +97,17 @@ public class EngineService {
 		List<String> toNodeInsIds = new ArrayList<String>();
 		// 从有向弧取出所有的目标节点模版ID和节点实例ID
 		extractToNodeIDs(edgeList,toNodeTids,toNodeInsIds);
-		// 创建事件
-		Event event = new ProcessStartEvent("Start process",
+		//事件通知
+		noticeByEvent(new ProcessStartEvent("Start process",
 				toNodeTids,
-				toNodeInsIds);
-		eventSupport.initEvent(event,processTmpDto.getProcessTemplateId(),
+				toNodeInsIds,EVENT_TYPE.proc_start),
+				processTmpDto.getProcessTemplateId(),
 				procIns.getProcessInsId(),
 				startNodeIns.getNodeInsId(),
 				startNodeIns.getNodeTemplateId(),
-				EVENT_TYPE.proc_start,
-				userId,
-				TimeUtil.getSystemTime(),
 				procIns.getProcessName(),
-				startNodeIns.getNodeName()
-				);
-		try {
-			// 发送事件（需持久化）->待办事项
-			eventSupport.dispatchEvent(event);
-		} catch (EventException e) {
-			e.printStackTrace();
-		} catch (MorningException e) {
-			e.printStackTrace();
-		}
-		
+				startNodeIns.getNodeName(),
+				userId);
 		return procIns.getProcessInsId();
 	}
 
@@ -150,7 +151,7 @@ public class EngineService {
 	private ProcessInstance createProcessIns(String processTemplateId, String processName, String systemTime,
 			String userId) {
 		ProcessInstance procIns = new ProcessInstance();
-		procIns.setProcessInsId(UUID.randomUUID().toString());
+		procIns.setProcessInsId(IdGenerator.generatProcessInsId());
 		procIns.setCreateTime(systemTime);
 		procIns.setProcessTemplateId(processTemplateId);
 		procIns.setProcessName(processName);
@@ -166,7 +167,7 @@ public class EngineService {
 		for(TaskOverview view : tasks)	{
 			TaskOverviewDto dto = new TaskOverviewDto(view.getTaskName(),
 					view.getCreateTime(),
-					TASK_STATUS.getBycode(view.getTaskStatus()).toString(),
+					view.getTaskStatus(),
 					view.getProcessNodeInsId(),
 					view.getNodeTId(),
 					view.getProcessInsId(),
@@ -177,11 +178,101 @@ public class EngineService {
 		return dtolist;
 	}
 
-	public NodeInstanceDto getNodeInstance(String nodeinsId) {
-		// TODO 
+	/**
+	 * 用户提交表单：节点状态为{@code TASK_STATUS.Ready}创建保存节点实例，表单实例，变更状态{@code TASK_STATUS.End}；
+	 * 节点状态为{@code TASK_STATUS.Running}获取实例，更新保存实例，变更状态{@code TASK_STATUS.End}
+	 * @param nodeInstanceDto
+	 * @param userId
+	 */
+	public void submitForm(NodeInstanceDto nodeInstanceDto, String userId) throws DBException {
+		if(nodeInstanceDto.getNodeStatus() == TASK_STATUS.Ready.getCode()) {
+			//说明节点实例尚未创建，创建节点实例
+			ProcessInstance procIns = processInstanceDao.getById(nodeInstanceDto.getProcessInsId());
+			NodeInstance nodeIns = procIns.createNodeInstance(nodeInstanceDto.getNodeTemplateId(), 
+					NODE_TYPE.Task.toString(), 
+					TASK_STATUS.End.getCode(), 
+					nodeInstanceDto.getNodeName(),
+					userId);
+			//创建并保存表单实例
+			List<FormInstance> formInsList = nodeIns.createFormInstance(nodeInstanceDto.getFormInsDtoList());
+			formInstanceDao.saveAll(formInsList);
+			//获取并保存字段值对象
+			nodeInstanceDto.getFormInsDtoList().forEach(formDto->{
+				formDto.setFormFieldInstance();
+			});
+			formInstanceDao.saveField(nodeInstanceDto.getFormInsDtoList());
+			//创建有向弧
+			ProcessTemplateDTO processTmpDto = processMetaService.getProcessTemplate(procIns.getProcessTemplateId());
+			List<EdgeIns> edgeInsList = createDirectedArcByNodeIns(processTmpDto, nodeIns);
+			edgeInstanceDao.save(edgeInsList);
+			List<String> toNodeTids = new ArrayList<String>();
+			List<String> toNodeInsIds = new ArrayList<String>();
+			// 从有向弧取出所有的目标节点模版ID和节点实例ID
+			extractToNodeIDs(edgeInsList,toNodeTids,toNodeInsIds);
+			//当一个的聚合持久化之后发送事件通知下一个任务节点
+			eventSupport.registerListener(taskSubmitListener, EVENT_TYPE.node_end);
+			TaskSubmitEvent event = new TaskSubmitEvent("",toNodeTids,toNodeInsIds,EVENT_TYPE.node_end);
+			noticeByEvent(event,
+					processTmpDto.getProcessTemplateId(),
+					procIns.getProcessInsId(),
+					nodeIns.getNodeInsId(),
+					nodeIns.getNodeTemplateId(),
+					procIns.getProcessName(),
+					nodeIns.getNodeName(),
+					userId);
+		}else if(nodeInstanceDto.getNodeStatus() == TASK_STATUS.Runing.getCode()){
+			//TODO 取节点实例和表单实例
+			//TODO 当一个的聚合持久化之后发送事件通知下一个任务节点
+		}
+		
+	}
+
+	private void noticeByEvent(Event event, 
+			String processTemplateId, String processInsId, String nodeInsId, String nodeTemplateId, String processName,
+			String nodeName, String userId) {
+		try {
+			
+			logger.debug("init event{}",event.getClass());
+			eventSupport.initEvent(event,
+					processTemplateId,
+					processInsId,
+					nodeInsId,
+					nodeTemplateId,
+					event.getEventType(),
+					userId,
+					TimeUtil.getSystemTime(),
+					processName,
+					nodeName
+			).dispatchEvent(event,event.getEventType());
+		} catch (EventException | MorningException e) {
+			e.printStackTrace();
+		};
+		
+	}
+
+
+	/**
+	 * 用户提交表单：节点状态为{@code TASK_STATUS.Ready}创建保存节点实例，表单实例，变更状态{@code TASK_STATUS.Running}；
+	 * 节点状态为{@code TASK_STATUS.Running}获取实例，更新保存实例
+	 * @param nodeInstanceDto
+	 * @param userId
+	 */
+	public NodeInstanceDto saveForm(NodeInstanceDto nodeInstanceDto, String userId) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
 	
 	
 }
+
+
+
+
+
+
+
+
+
+
+

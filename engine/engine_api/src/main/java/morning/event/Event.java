@@ -1,6 +1,7 @@
 package morning.event;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -17,8 +18,6 @@ public class Event {
 	private String createTime;
 	private String processName;
 	private String nodeName;
-	private EVENT_TYPE eventType;
-	
-	
+	public EVENT_TYPE eventType;
 	
 }

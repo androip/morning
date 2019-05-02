@@ -1,6 +1,7 @@
 package morning.dto;
 
 import java.io.Serializable;
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,6 +21,7 @@ public class NodeInstanceDto implements Serializable{
 	private String processInsId;
 	private String nodeName;
 	private String nodeType;
-	private String nodeStatus;
+	private Integer nodeStatus;
+	private List<FormInstancDto> formInsDtoList;
 	
 }

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,6 +15,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import morning.dto.NodeInstanceDto;
 import morning.dto.TaskOverviewDto;
+import morning.exception.DBException;
 import morning.service.impl.EngineService;
 
 @Api(value = "Engin管理API接口")
@@ -39,10 +41,22 @@ public class EngineController {
 	}
 	
 	
-	@ApiOperation(value = "根据节点实例ID，查询节点实例", notes = "")
-	@RequestMapping(value = {"/procins/nodeins/{nodeinsId}"}, method = RequestMethod.GET)
-	public @ResponseBody NodeInstanceDto  getTaskOverviewList(@PathVariable String nodeinsId,@RequestParam String userId) {
-		NodeInstanceDto  dto = engineService.getNodeInstance(nodeinsId);
+	@ApiOperation(value = "提交表单", notes = "")
+	@RequestMapping(value = {"/procins/nodeins"}, method = RequestMethod.POST)
+	public void  submitForm(@RequestBody NodeInstanceDto nodeInstanceDto,@RequestParam String userId) throws DBException {
+		engineService.submitForm(nodeInstanceDto,userId);
+	}
+	
+	@ApiOperation(value = "如果节点状态为Running（已经创建），取节点", notes = "")
+	@RequestMapping(value = {"/procins/nodeins/{instancessId}"}, method = RequestMethod.GET)
+	public void  getNdoeInstance(@PathVariable String instancessId,@RequestParam String userId) throws DBException {
+		//TODO
+	}
+	
+	@ApiOperation(value = "保存表单", notes = "")
+	@RequestMapping(value = {"/procins/nodeins"}, method = RequestMethod.PUT)
+	public @ResponseBody NodeInstanceDto  getTaskOverviewList(@RequestBody NodeInstanceDto nodeInstanceDto,@RequestParam String userId) {
+		NodeInstanceDto  dto = engineService.saveForm(nodeInstanceDto,userId);
 		return dto;
 	}
 	

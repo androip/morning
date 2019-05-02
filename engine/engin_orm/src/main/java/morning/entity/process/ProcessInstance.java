@@ -21,7 +21,7 @@ public class ProcessInstance {
 	private String createUserId;
 	private String status;
 	
-	public NodeInstance createNodeInstance(String nodeTempId,String type,String status, String nodeName) {
+	public NodeInstance createNodeInstance(String nodeTempId,String type,Integer status, String nodeName, String userId) {
 		NodeInstance nodeIns = new NodeInstance();
 		nodeIns.setNodeInsId(UUID.randomUUID().toString());
 		nodeIns.setNodeTemplateId(nodeTempId);
@@ -29,6 +29,7 @@ public class ProcessInstance {
 		nodeIns.setProcessInsId(this.processInsId);
 		nodeIns.setNodeStatus(status);
 		nodeIns.setNodeName(nodeName);
+		nodeIns.setUserId(userId);
 		return nodeIns;
 	}
 	
