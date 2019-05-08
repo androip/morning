@@ -14,10 +14,13 @@ import morining.dto.proc.ProcessTemplateDTO;
 @FeignClient(value = "meta-server")
 public interface IProcessMetaService {
 
-	 @RequestMapping(value = {"/meta/processtemplate/{processTemplateId}"}, method = RequestMethod.GET)
-	 public @ResponseBody ProcessTemplateDTO getProcessTemplate(@PathVariable(value="processTemplateId") String processTemplateId);
+	@RequestMapping(value = {"/meta/processtemplate/{processTemplateId}"}, method = RequestMethod.GET)
+	public @ResponseBody ProcessTemplateDTO getProcessTemplate(@PathVariable(value="processTemplateId") String processTemplateId);
 
-	 @RequestMapping(value = {"/meta/processtemplates"}, method = RequestMethod.GET)
-	 public @ResponseBody List<ProcessTemplateDTO> getProcessTemplateList(@RequestParam(required=false,value="start") Integer start,
+	@RequestMapping(value = {"/meta/processtemplates"}, method = RequestMethod.GET)
+	public @ResponseBody List<ProcessTemplateDTO> getProcessTemplateList(@RequestParam(required=false,value="start") Integer start,
 			 															@RequestParam(required=false,value="size") Integer size);
+
+	@RequestMapping(value = {"/meta/processtemplate"}, method = RequestMethod.GET)
+	public ProcessTemplateDTO getProcessTemplateByNodeTid(@RequestParam(value="nodeTemplateId")String nodeTemplateId);
 }

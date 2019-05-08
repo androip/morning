@@ -12,6 +12,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import com.alibaba.fastjson.JSON;
 
 import morning.EngineApp;
+import morning.exception.DBException;
 import morning.service.impl.EngineService;
 
 
@@ -27,6 +28,11 @@ public class EngineTests {
 	
 	@Test
 	public void getOneTest() {
-		logger.info(JSON.toJSONString(engineService.startProcess("p1", "jiangpeng")));
+		try {
+			logger.info(JSON.toJSONString(engineService.startProcess("p1", "jiangpeng")));
+		} catch (DBException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

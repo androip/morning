@@ -6,10 +6,7 @@ import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import morining.dto.proc.node.NodeTemplateDto;
-import morining.dto.proc.node.form.FormPropertyDto;
 import morning.dto.FormInstancDto;
-import morning.dto.NodeInstanceDto;
 import morning.util.IdGenerator;
 
 @NoArgsConstructor
@@ -33,6 +30,7 @@ public class NodeInstance {
 			FormInstance formIns = new FormInstance(fromDto.getFormTid(),
 					formInsId,
 					this.nodeInsId,
+					this.processInsId,
 					fromDto.getFormType(),
 					fromDto.getFormName());
 			formInsList.add(formIns);

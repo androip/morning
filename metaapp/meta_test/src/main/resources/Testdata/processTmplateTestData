@@ -49,7 +49,7 @@
             }
           ],
           "formName": "string",
-          "formTemplateId": "string",
+          "formTemplateId": "formTid1",
           "formType": "bill"
         }
       ],

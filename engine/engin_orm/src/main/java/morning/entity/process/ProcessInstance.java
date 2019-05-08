@@ -2,8 +2,6 @@ package morning.entity.process;
 
 import java.util.UUID;
 
-import javax.net.ssl.SSLEngineResult.Status;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

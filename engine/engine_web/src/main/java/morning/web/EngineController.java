@@ -1,7 +1,9 @@
 package morning.web;
 
 import java.util.List;
+import java.util.Map;
 
+import morning.vo.FormFieldInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,7 +30,7 @@ public class EngineController {
 	
 	@ApiOperation(value = "指定流程模版，实例化一个流程", notes = "")
 	@RequestMapping(value = {"/procins"}, method = RequestMethod.POST)
-	public String  getProcessTemplate(@RequestParam String processTemplateId,@RequestParam String userId) {
+	public String  getProcessTemplate(@RequestParam String processTemplateId,@RequestParam String userId) throws DBException {
 		String processId = engineService.startProcess(processTemplateId,userId);
 		return processId;
 	}
@@ -39,26 +41,25 @@ public class EngineController {
 		List<TaskOverviewDto>  dtolist = engineService.getTaskOverviewList(userId);
 		return dtolist;
 	}
-	
-	
+
 	@ApiOperation(value = "提交表单", notes = "")
 	@RequestMapping(value = {"/procins/nodeins"}, method = RequestMethod.POST)
 	public void  submitForm(@RequestBody NodeInstanceDto nodeInstanceDto,@RequestParam String userId) throws DBException {
 		engineService.submitForm(nodeInstanceDto,userId);
 	}
-	
-	@ApiOperation(value = "如果节点状态为Running（已经创建），取节点", notes = "")
-	@RequestMapping(value = {"/procins/nodeins/{instancessId}"}, method = RequestMethod.GET)
-	public void  getNdoeInstance(@PathVariable String instancessId,@RequestParam String userId) throws DBException {
-		//TODO
+
+	@ApiOperation(value = "查询节点信息", notes = "")
+	@RequestMapping(value = {"/procins/nodeins/{nodeInsId}"}, method = RequestMethod.GET)
+	public @ResponseBody Map<String, List<FormFieldInstance>> getNodeIns(@PathVariable String nodeInsId) throws DBException {
+		return engineService.getNodeIns(nodeInsId);
 	}
 	
 	@ApiOperation(value = "保存表单", notes = "")
 	@RequestMapping(value = {"/procins/nodeins"}, method = RequestMethod.PUT)
-	public @ResponseBody NodeInstanceDto  getTaskOverviewList(@RequestBody NodeInstanceDto nodeInstanceDto,@RequestParam String userId) {
-		NodeInstanceDto  dto = engineService.saveForm(nodeInstanceDto,userId);
-		return dto;
+	public  void  saveForm(@RequestBody NodeInstanceDto nodeInstanceDto,@RequestParam String userId) throws DBException {
+		engineService.saveForm(nodeInstanceDto,userId);
 	}
+	
 	
 }
 

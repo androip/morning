@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -13,7 +14,6 @@ import morining.dto.proc.ProcessTemplateDTO;
 import morining.dto.proc.node.NodeTemplateDto;
 import morining.exception.MetaServiceException;
 import morning.entity.process.ProcessTemplate;
-import morning.entity.process.node.NodeTemplate;
 import morning.repo.MetaDao;
 import morning.repo.ProcessTemplateRepository;
 import morning.service.factory.ProcessTemplateDtoFactory;
@@ -70,10 +70,15 @@ public class MetaServiceImpl {
 
 
 	//TODO 需要添加缓存
-	public NodeTemplateDto getNodeTemplateLByNodeTid(String processTid, String nodeTid) throws MetaServiceException {
+	public NodeTemplateDto getNodeTemplateLByNodeTid(String processTid,String nodeTid) throws MetaServiceException {
 		ProcessTemplateDTO proceTmpDto = getProcessTemplateById(processTid);
 		NodeTemplateDto nodeTmp = proceTmpDto.getNodeTemplateById(nodeTid);
 		return nodeTmp;
+	}
+
+	public ProcessTemplateDTO getProcessTemplateLByNodeTid(String nodeTemplateId) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

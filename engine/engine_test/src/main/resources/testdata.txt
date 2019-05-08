@@ -1,0 +1,26 @@
+{
+  "formInsDtoList": [
+    {
+      "formFieldInstanceList": [
+        {
+          "fkey": "string",
+          "formInstanceId": "string",
+          "ftype": "string",
+          "fval": "string",
+          "rkey": "string",
+          "tableName": "string"
+        }
+      ],
+      "formInsid": "string",
+      "formName": "string",
+      "formTid": "string",
+      "formType": "Bill"
+    }
+  ],
+  "nodeInsId": "string",
+  "nodeName": "string",
+  "nodeStatus": 0,
+  "nodeTemplateId": "n1",
+  "nodeType": "Task",
+  "processInsId": "proc20190502171015"
+}

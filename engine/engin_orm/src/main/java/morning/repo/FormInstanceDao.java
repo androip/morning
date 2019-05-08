@@ -1,18 +1,25 @@
 package morning.repo;
 
-import morning.dto.FormInstancDto;
-import morning.entity.process.EdgeIns;
-import morning.entity.process.FormInstance;
-import morning.exception.DBException;
-import morning.vo.FormFieldInstance;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.*;
 
+import morning.entity.process.NodeInstance;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.ResultSetExtractor;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
+import morning.dto.FormInstancDto;
+import morning.entity.process.FormInstance;
+import morning.exception.DBException;
+import morning.vo.FormFieldInstance;
 
 
 @Component
@@ -24,13 +31,14 @@ public class FormInstanceDao {
 
     public void saveAll(List<FormInstance> formInsList) throws DBException {
         StringBuffer INSTER_SQL = new StringBuffer("INSERT INTO FormInstance");
-        INSTER_SQL.append("(formTid,formInstanceId,nodeInstanceId,formType,formName)");
+        INSTER_SQL.append("(formTid,formInstanceId,nodeInstanceId,processInstanceId,formType,formName)");
         INSTER_SQL.append("VALUES");
         for(FormInstance formIn:formInsList) {
             INSTER_SQL.append("(");
             INSTER_SQL.append("'").append(formIn.getFormTid()).append("'").append(",");
             INSTER_SQL.append("'").append(formIn.getFormInstanceId()).append("'").append(",");
             INSTER_SQL.append("'").append(formIn.getNodeInstanceId()).append("'").append(",");
+            INSTER_SQL.append("'").append(formIn.getProcessInstanceId()).append("'").append(",");
             INSTER_SQL.append("'").append(formIn.getFormType()).append("'").append(",");
             INSTER_SQL.append("'").append(formIn.getFormName()).append("'");
             INSTER_SQL.append("),");
@@ -73,15 +81,137 @@ public class FormInstanceDao {
 	    }
 		
 	}
+
 	
+	public void updateFormFieldVal(List<FormInstancDto> formInsDtoList) throws DBException {
+		StringBuffer SQL_BUF = new StringBuffer("UPDATE FormFieldInstance AS F");
+		SQL_BUF.append(" SET F.fval = CASE F.fkey");
+		for(FormInstancDto form : formInsDtoList) {
+			List<FormFieldInstance> fields = form.getFormFieldInstanceList();
+			for(FormFieldInstance field: fields) {
+				SQL_BUF.append(" WHENE").append("'").append(field.getFkey()).append("'")
+				.append(" THEN").append("'").append(field.getFval());
+			}
+		}
+		SQL_BUF.append(" END")
+		.append(" WHERE F.formInstanceId ").append("IN (");
+		formInsDtoList.forEach(form->{
+			SQL_BUF.append("'").append(form.getFormInsid()).append("'");
+		});
+		SQL_BUF.append(")");
+		String sql = SQL_BUF.toString();
+		logger.debug("FormFiels update SQL:"+sql);
+		try {
+			jdbcTemplate.execute(sql);
+		}catch(Exception e) {
+			throw new DBException(e);
+		}
+		
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+		
+	}
+
+
+    public List<FormInstance> getFormInsByNodeInsId(String nodeInsId) throws DBException {
+		StringBuffer SQL_BUF = new StringBuffer("SELECT * FROM FormInstance");
+		SQL_BUF.append(" WHERE");
+		SQL_BUF.append(" nodeInstanceId = ?");
+		String sql = SQL_BUF.toString();
+		logger.debug("Form Query SQL id[{}] :"+ sql,nodeInsId);
+		List<FormInstance> reslist = new ArrayList<FormInstance>();
+		try {
+			reslist = jdbcTemplate.query(sql, new String[] {nodeInsId},new BeanPropertyRowMapper<FormInstance>(FormInstance.class));
+		}catch (Exception e){
+			throw new DBException(e);
+		}
+		return  reslist;
+    }
+
+	public Map<String,List<FormFieldInstance>> getFormFieldInstance(List<FormInstance> formInstanceList) throws DBException {
+
+		Set<String> formInsIds = new HashSet<String>(){{
+				formInstanceList.forEach(form->{
+					add(form.getFormInstanceId());
+				});
+			}
+		};
+
+		StringBuffer SQL_BUF = new StringBuffer("SELECT * FROM FormFieldInstance");
+		SQL_BUF.append(" WHERE");
+		SQL_BUF.append(" formInstanceId IN (:ids)");
+		String sql = SQL_BUF.toString();
+		logger.debug("FormFiels Query SQL  :"+ sql);
+		Map<String, List<FormFieldInstance>> resMap = null;
+
+
+		Map<String, Object> args  = new HashMap<>();
+		args.put("ids", formInsIds);
+
+		Map<String,Object> paramMap = new HashMap<>();
+		paramMap.put("ids", formInsIds);
+
+		NamedParameterJdbcTemplate givenParamJdbcTemp = new NamedParameterJdbcTemplate(jdbcTemplate);
+
+		try {
+			resMap =  givenParamJdbcTemp.query(sql, args, new ResultSetExtractor<Map<String,List<FormFieldInstance>>>() {
+				@Override
+				public Map<String,List<FormFieldInstance>> extractData(ResultSet rs) throws SQLException, DataAccessException {
+					Map<String,List<FormFieldInstance>> resMap = new HashMap<>();
+
+					while (rs.next()){
+
+						FormFieldInstance field = new FormFieldInstance();
+						field.setFormInstanceId(rs.getString("formInstanceId"));
+						field.setFkey(rs.getString("fkey"));
+						field.setFval(rs.getString("fval"));
+						field.setFtype(rs.getString("ftype"));
+						field.setRkey(rs.getString("rkey"));
+						field.setTableName(rs.getString("tableName"));
+
+						if(!resMap.containsKey(field.getFormInstanceId())){
+							List<FormFieldInstance> reslist = new ArrayList<FormFieldInstance>();
+							reslist.add(field);
+							resMap.put(field.getFormInstanceId(),reslist);
+						}else {
+							resMap.get(field.getFormInstanceId()).add(field);
+						}
+
+					}
+					return resMap;
+				}
+			});
+
+
+		}catch (Exception e){
+			throw new DBException(e);
+		}
+
+
+		return resMap;
+
+	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -74,8 +74,14 @@ public class MetaController {
 	
 	@ApiOperation(value = "根据nodetId查询节点模版", notes = "")
 	@RequestMapping(value = {"/processtemplate/{processTid}/nodetmpl/{nodeTid}"}, method = RequestMethod.GET)
-	public @ResponseBody NodeTemplateDto getProcessTemplateListBy(@PathVariable String processTid,@PathVariable String nodeTid) throws MetaServiceException {
+	public @ResponseBody NodeTemplateDto getNodeTemplateListBy(@PathVariable String processTid,@PathVariable String nodeTid) throws MetaServiceException {
 		return metaService.getNodeTemplateLByNodeTid(processTid,nodeTid);
+	}
+	
+	@ApiOperation(value = "根据nodeTId查询流程模版", notes = "")
+	@RequestMapping(value = {"/processtemplate"}, method = RequestMethod.GET)
+	public @ResponseBody ProcessTemplateDTO getProcessTemplateListBy(@RequestParam(value="nodeTemplateId")String nodeTemplateId) throws MetaServiceException {
+		return metaService.getProcessTemplateLByNodeTid(nodeTemplateId);
 	}
 	
 	private Map<String,Object> getParams(HttpServletRequest request) {  
