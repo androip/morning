@@ -18,3 +18,15 @@ Mysql负责存储流程运行时的实例话数据
 ###架构一览
 
 ![Image text](https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=1488598967,681368208&fm=27&gp=0.jpg)
+
+
+Spring (formerly TASpring) is an Open Source Real Time Strategy game engine. Visit our project homepage for help, suggestions, bugs, community forum and everything spring related.
+
+Compiling
+Detailed instructions for how to compile Spring can be found here
+
+The most simple set of commands will be:
+
+cmake .
+make
+Installation
