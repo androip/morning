@@ -15,6 +15,6 @@ Mysql负责存储流程运行时的实例话数据
 微服务之间如果发生异步通信，将采用RabbitMQ做为底层基础消息设施
 本项目目前持久化尚未使用ORM框架，暂以Spring-data和JdbcTemplate为持久化手段。
 
-###架构一览
+### 架构一览
 
-![Image text](https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=1488598967,681368208&fm=27&gp=0.jpg)
+![Image text](https://github.com/androip/morning/blob/master/framework.png)
