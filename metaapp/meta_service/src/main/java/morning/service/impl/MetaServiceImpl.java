@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -14,11 +13,13 @@ import morining.dto.proc.ProcessTemplateDTO;
 import morining.dto.proc.node.NodeTemplateDto;
 import morining.dto.rule.FormTransformRuleDto;
 import morining.exception.MetaServiceException;
+import morining.exception.RuleException;
 import morning.bill.FormTransformRule;
 import morning.entity.process.ProcessTemplate;
 import morning.repo.FormTransformRuleRepository;
 import morning.repo.MetaDao;
 import morning.repo.ProcessTemplateRepository;
+import morning.service.factory.FormTransformRuleDTOFactory;
 import morning.service.factory.FormTransformRuleFactory;
 import morning.service.factory.ProcessTemplateDtoFactory;
 import morning.service.factory.ProcessTemplateFactory;
@@ -88,6 +89,12 @@ public class MetaServiceImpl {
 	public void createFromRule(FormTransformRuleDto dto) {
 		FormTransformRule rule = new FormTransformRuleFactory().create(dto);
 		formTransformRuleRepository.save(rule);
+	}
+
+	public FormTransformRuleDto getFromRuleById(String ruleId) throws RuleException {
+		FormTransformRule rule = formTransformRuleRepository.findById(ruleId).orElseThrow(()->new RuleException("马勒戈壁，没找到！"));
+		FormTransformRuleDto dto = new FormTransformRuleDTOFactory().createDto(rule);
+		return dto;
 	}
 
 

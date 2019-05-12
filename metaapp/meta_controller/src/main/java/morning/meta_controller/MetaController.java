@@ -22,6 +22,7 @@ import morining.dto.rule.FormTransformRuleDto;
 import morining.dto.proc.ProcessTemplateDTO;
 import morining.dto.proc.node.NodeTemplateDto;
 import morining.exception.MetaServiceException;
+import morining.exception.RuleException;
 import morning.service.impl.MetaServiceImpl;
 
 @Api(value = "Meta管理API接口", tags = "Meta管理API接口")
@@ -84,14 +85,6 @@ public class MetaController {
 	public @ResponseBody ProcessTemplateDTO getProcessTemplateListBy(@RequestParam(value="nodeTemplateId")String nodeTemplateId) throws MetaServiceException {
 		return metaService.getProcessTemplateLByNodeTid(nodeTemplateId);
 	}
-	
-	@ApiOperation(value = "创建单据转换规则", notes = "")
-	@RequestMapping(value = {"/rule"}, method = RequestMethod.POST)
-	public void createFromRule(@RequestBody FormTransformRuleDto dto) {
-		metaService.createFromRule(dto);
-	}
-	
-	
 	
 	private Map<String,Object> getParams(HttpServletRequest request) {  
         Map<String,Object> map = new HashMap<String,Object>();  
