@@ -45,7 +45,7 @@ public class FormInstanceDao {
 
         }
         String sql = INSTER_SQL.toString();
-        logger.debug("FormInstance SQL{}",sql.substring(0,sql.length()-1));
+        logger.debug("FormInstance SQL:{}",sql.substring(0,sql.length()-1));
         try {
             jdbcTemplate.execute(sql.substring(0,sql.length()-1));
         }catch (Exception e){
@@ -73,7 +73,7 @@ public class FormInstanceDao {
 		}
 
 		String sql = INSTER_SQL.toString();
-	    logger.debug("FormInstance SQL{}",sql.substring(0,sql.length()-1));
+	    logger.debug("FormInstance SQL:{}",sql.substring(0,sql.length()-1));
 	    try {
 	        jdbcTemplate.execute(sql.substring(0,sql.length()-1));
 	    }catch (Exception e){

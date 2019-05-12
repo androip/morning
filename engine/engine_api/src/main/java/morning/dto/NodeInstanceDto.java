@@ -6,6 +6,7 @@ import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import morning.vo.FormFieldInstance;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -23,5 +24,17 @@ public class NodeInstanceDto implements Serializable{
 	private String nodeType;
 	private Integer nodeStatus;
 	private List<FormInstancDto> formInsDtoList;
+	
+	public Object getFieldValueByFKey(String condkey) {
+		for(FormInstancDto form:formInsDtoList) {
+			List<FormFieldInstance> fieldList = form.getFormFieldInstanceList();
+			for(FormFieldInstance field:fieldList) {
+				if(field.getFkey().equals(condkey)) {
+					return field.getFval();
+				}
+			}
+		}
+		return null;
+	}
 	
 }

@@ -6,8 +6,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import org.springframework.stereotype.Component;
-
 import morining.dto.proc.ProcessTemplateDTO;
 import morining.dto.proc.edge.EdgeDto;
 import morining.dto.proc.node.ConditionDto;
@@ -17,8 +15,6 @@ import morining.dto.proc.node.form.FormPropertyDto;
 import morining.dto.proc.node.form.FormStructureDto;
 import morining.dto.proc.node.form.field.FiedPropertyDto;
 import morining.dto.proc.node.form.field.RelationInfoDto;
-import morining.dto.rel.FormRelationDto;
-import morning.entity.process.FormRelation;
 import morning.entity.process.ProcessTemplate;
 import morning.entity.process.edge.Edge;
 import morning.entity.process.node.Condition;
@@ -30,7 +26,6 @@ import morning.entity.process.node.form.filed.FieldProperty;
 import morning.entity.process.node.form.filed.RelationInfo;
 import morning.vo.FORMTYPE;
 
-@Component
 public class ProcessTemplateFactory {
 
 	public ProcessTemplate create(ProcessTemplateDTO dto) {

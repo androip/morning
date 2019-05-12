@@ -26,7 +26,7 @@ public class RelationInfoDto implements Serializable {
 	 */
 	private String relationSource;
 	private List<String> viewFkey;
-	private Map<String,String> conditions;   //key 条件字段 ,val 条件值 
+	private Map<String,Object> conditions;   //key 条件字段 ,val 条件值 
 	private String Pkey; //relationSource的主键字段
 
 

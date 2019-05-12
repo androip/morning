@@ -3,8 +3,6 @@ package morning.entity.process.node.form;
 import java.io.Serializable;
 import java.util.List;
 
-import org.springframework.data.mongodb.core.index.Indexed;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

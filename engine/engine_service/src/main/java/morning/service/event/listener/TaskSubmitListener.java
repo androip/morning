@@ -30,7 +30,7 @@ public class TaskSubmitListener implements EventListener {
 		logger.debug("On TaskSubmitListener: {}",JSON.toJSONString(event));
 		TaskSubmitEvent submitEvent = (TaskSubmitEvent)event;
 		List<String> toNodeTIds = submitEvent.getToNodeTids();
-		// 创建任务一览记录---下一个Task节点
+		// 创建任务一览记录---下游Task节点
 		List<TaskOverview> taskOtaskOVs = new ArrayList<TaskOverview>();
 		for(String toTId : toNodeTIds) {
 			TaskOverview taskOV = new TaskOverview(event.getUserId(),

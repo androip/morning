@@ -1,4 +1,4 @@
-package morning.service.event;
+package morning.event;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,11 +10,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import morning.event.EVENT_TYPE;
-import morning.event.Event;
-import morning.event.EventListener;
-import morning.service.event.exception.EventException;
-import morning.service.exception.MorningException;
+import morning.exception.EventException;
+import morning.exception.MorningException;
 
 @Component
 public class ProcessEventSupport {
@@ -152,9 +149,7 @@ public class ProcessEventSupport {
 		List<EventListener> typed = typedListeners.get(eventType);
 		logger.debug("typedlist {}",typed);
 		if(typed != null && !typed.isEmpty()) {
-			logger.debug("ni ma bi  {}");
 			for(EventListener listener: typed) {
-				logger.debug("caonima  {}",listener);
 				dispatchEvent(event,listener);
 			}
 		}

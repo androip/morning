@@ -12,10 +12,14 @@ import org.springframework.stereotype.Service;
 
 import morining.dto.proc.ProcessTemplateDTO;
 import morining.dto.proc.node.NodeTemplateDto;
+import morining.dto.rule.FormTransformRuleDto;
 import morining.exception.MetaServiceException;
+import morning.bill.FormTransformRule;
 import morning.entity.process.ProcessTemplate;
+import morning.repo.FormTransformRuleRepository;
 import morning.repo.MetaDao;
 import morning.repo.ProcessTemplateRepository;
+import morning.service.factory.FormTransformRuleFactory;
 import morning.service.factory.ProcessTemplateDtoFactory;
 import morning.service.factory.ProcessTemplateFactory;
 
@@ -27,10 +31,10 @@ public class MetaServiceImpl {
 	@Autowired
 	private MetaDao metaDao;
 	@Autowired
-	private ProcessTemplateFactory processTemplateFactory;
-	
+	private FormTransformRuleRepository formTransformRuleRepository;
 	@Autowired
 	private ProcessTemplateDtoFactory processTemplateDtoFactory;
+
 	
 	public ProcessTemplateDTO getProcessTemplateById(String templateId) throws MetaServiceException {
 		ProcessTemplate entity = processTemplateRepository.findById(templateId).orElseThrow(()->new MetaServiceException("马勒戈壁，没找到！"));
@@ -39,7 +43,7 @@ public class MetaServiceImpl {
 	}
 
 	public void saveProcessTemplate(ProcessTemplateDTO dto) {
-		ProcessTemplate entity = processTemplateFactory.create(dto);
+		ProcessTemplate entity = new ProcessTemplateFactory().create(dto);
 		processTemplateRepository.save(entity);
 	}
 
@@ -79,6 +83,11 @@ public class MetaServiceImpl {
 	public ProcessTemplateDTO getProcessTemplateLByNodeTid(String nodeTemplateId) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public void createFromRule(FormTransformRuleDto dto) {
+		FormTransformRule rule = new FormTransformRuleFactory().create(dto);
+		formTransformRuleRepository.save(rule);
 	}
 
 

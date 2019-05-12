@@ -3,8 +3,6 @@ package morning.entity.process.node;
 import java.io.Serializable;
 import java.util.List;
 
-import org.springframework.data.mongodb.core.index.Indexed;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,5 +23,6 @@ public class NodeTemplate implements Serializable{
 	protected String nodeTemplateType;
 	protected List<FormProperty> formProeties;
 	private FormStructure fromStructure;
+	private String ruleId;//单据转换规则
 
 }

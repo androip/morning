@@ -19,5 +19,5 @@ public class Condition implements Serializable{
 	private static final long serialVersionUID = 3472770460898934662L;
 
 	private String filedKey;				//要判断的字段，暂时只支持判断单个字段
-	private Map<String,List<String>> targets; //key 条件值，val 目标出度
+	private Map<Object,List<String>> targets; //key 期望的条件值，val 目标出度
 }

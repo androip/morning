@@ -48,7 +48,7 @@ public class EngineController {
 		engineService.submitForm(nodeInstanceDto,userId);
 	}
 
-	@ApiOperation(value = "查询节点信息", notes = "")
+	@ApiOperation(value = "查询表单信息", notes = "K：表单ID，V：表单字段信息")
 	@RequestMapping(value = {"/procins/nodeins/{nodeInsId}"}, method = RequestMethod.GET)
 	public @ResponseBody Map<String, List<FormFieldInstance>> getNodeIns(@PathVariable String nodeInsId) throws DBException {
 		return engineService.getNodeIns(nodeInsId);

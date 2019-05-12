@@ -1,4 +1,4 @@
-package morning.service.event.exception;
+package morning.exception;
 
 public class EventException extends Exception {
 

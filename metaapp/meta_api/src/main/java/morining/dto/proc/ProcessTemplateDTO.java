@@ -2,7 +2,9 @@ package morining.dto.proc;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -62,7 +64,11 @@ public class ProcessTemplateDTO implements Serializable{
 		return null;
 	}
 
-
+	/**
+	 * 取节点的出度
+	 * @param nodeTid
+	 * @return
+	 */
 	public List<EdgeDto> getEdgeDtoByFrom(String nodeTid) {
 		
 		return new ArrayList<EdgeDto>() {
@@ -86,6 +92,34 @@ public class ProcessTemplateDTO implements Serializable{
 		}
 		return null;
 		
+	}
+
+
+	/**
+	 * 根据当前节点TID获取下一个节点的类型
+	 * @param curNodeTId
+	 * @return K:下一个节点ID，V:下一个节点类型
+	 */
+	public Map<String,String> getNextNodeType(String curNodeTId) {
+		List<EdgeDto> froms = getEdgeDtoByFrom(curNodeTId);
+		Map<String,String> typeMap = new HashMap<String,String>(){
+			private static final long serialVersionUID = 1L;
+			{
+				froms.forEach(edge->{
+					put(edge.getTo(),getNodeType(edge.getTo()));
+				});
+			}
+		};
+		return typeMap;
+	}
+
+
+	public GatewayNodeTemplateDto getGatewayNodeTemplateById(String nodeTId) {
+		for(GatewayNodeTemplateDto dto : gatewayNodeTemplateDtoList) {
+			if(nodeTId.equals(dto.getNodeTemplateId()))
+				return dto;
+		}
+		return null;
 	}
 
 }

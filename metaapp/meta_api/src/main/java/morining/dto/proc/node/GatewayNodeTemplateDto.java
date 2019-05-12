@@ -18,5 +18,9 @@ public class GatewayNodeTemplateDto extends NodeTemplateDto{
 
 	private List <String> defaultEdgeId;
 	private ConditionDto condition;
+	public Object getFieldValueByFKey(String condkey) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }
