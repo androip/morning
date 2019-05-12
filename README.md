@@ -22,8 +22,10 @@
 
 两个系统均为Spring-boot项目，并使用Spring-Cloud做为微服务解决方案。
 
-数据库使用MongoDB和MySQL，其中MongoDB主要负责存储元数据以及系统运行时产生的各种事件流程/表单定义/事件均以JSON文档形式存放在MongoDB）；
-Mysql负责存储流程运行时的实例话数据
+所涉及的RPC以RESTful方式（即HTTP协议）或者异步消息（AMQP协议）通信。
+
+数据库使用MongoDB和MySQL，其中MongoDB主要负责存储元数据以及系统运行时产生的各种事件（流程定义/表单定义/事件均以JSON文档形式存放在MongoDB）；
+Mysql负责存储流程运行时的实例化数据。
 
 ### 尚未添加
 
