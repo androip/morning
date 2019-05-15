@@ -1,4 +1,4 @@
-package morning.event;
+package morining.event;
 
 /**
  * The <code>EventListener</code> interface is the primary method for

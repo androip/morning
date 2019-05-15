@@ -1,4 +1,4 @@
-package morning.event;
+package morining.event;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,8 +10,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import morning.exception.EventException;
-import morning.exception.MorningException;
+import morining.exception.EventException;
+import morining.exception.MorningException;
+
 
 @Component
 public class ProcessEventSupport {

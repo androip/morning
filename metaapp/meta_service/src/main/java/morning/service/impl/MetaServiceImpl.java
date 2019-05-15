@@ -12,13 +12,19 @@ import org.springframework.stereotype.Service;
 import morining.dto.proc.ProcessTemplateDTO;
 import morining.dto.proc.node.NodeTemplateDto;
 import morining.dto.rule.FormTransformRuleDto;
+import morining.event.EVENT_TYPE;
+import morining.event.ProcessEventSupport;
+import morining.exception.EventException;
 import morining.exception.MetaServiceException;
+import morining.exception.MorningException;
 import morining.exception.RuleException;
 import morning.bill.FormTransformRule;
 import morning.entity.process.ProcessTemplate;
 import morning.repo.FormTransformRuleRepository;
 import morning.repo.MetaDao;
 import morning.repo.ProcessTemplateRepository;
+import morning.service.event.FormRuleEvent;
+import morning.service.event.listener.CreateFormRuleListener;
 import morning.service.factory.FormTransformRuleDTOFactory;
 import morning.service.factory.FormTransformRuleFactory;
 import morning.service.factory.ProcessTemplateDtoFactory;
@@ -35,6 +41,10 @@ public class MetaServiceImpl {
 	private FormTransformRuleRepository formTransformRuleRepository;
 	@Autowired
 	private ProcessTemplateDtoFactory processTemplateDtoFactory;
+	@Autowired
+	private ProcessEventSupport eventSupport;
+	@Autowired
+	private CreateFormRuleListener createFormRuleListener;
 
 	
 	public ProcessTemplateDTO getProcessTemplateById(String templateId) throws MetaServiceException {
@@ -89,6 +99,24 @@ public class MetaServiceImpl {
 	public void createFromRule(FormTransformRuleDto dto) {
 		FormTransformRule rule = new FormTransformRuleFactory().create(dto);
 		formTransformRuleRepository.save(rule);
+		eventSupport.registerListener(createFormRuleListener, EVENT_TYPE.rule_create);
+		//创建事件
+		FormRuleEvent event = new FormRuleEvent(rule.getTransformId(),
+												rule.getSrcFormTid(),
+												rule.getDesFormTId(),
+												EVENT_TYPE.rule_create,
+												dto.getProcessTid());
+		//通知Meta更新ruleID
+		noticeByEvent(event);
+	}
+
+	private void noticeByEvent(FormRuleEvent event) {
+		try {
+			eventSupport.dispatchEvent(event, event.getEventType());
+		} catch (EventException | MorningException e) {
+			e.printStackTrace();
+		}
+		
 	}
 
 	public FormTransformRuleDto getFromRuleById(String ruleId) throws RuleException {
@@ -99,3 +127,14 @@ public class MetaServiceImpl {
 
 
 }
+
+
+
+
+
+
+
+
+
+
+

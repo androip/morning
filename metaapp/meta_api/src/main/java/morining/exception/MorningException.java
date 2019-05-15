@@ -1,4 +1,4 @@
-package morning.exception;
+package morining.exception;
 
 public class MorningException extends Exception {
 

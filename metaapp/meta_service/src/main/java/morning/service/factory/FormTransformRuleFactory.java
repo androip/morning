@@ -4,12 +4,13 @@ import morining.dto.rule.FieldTransformRuleDto;
 import morining.dto.rule.FormTransformRuleDto;
 import morning.bill.FieldTransformRule;
 import morning.bill.FormTransformRule;
+import morning.util.IdGenerator;
 
 public class FormTransformRuleFactory {
 
 	public FormTransformRule create(FormTransformRuleDto dto) {
 		
-		FormTransformRule rule = new FormTransformRule(dto.getTransformId(),
+		FormTransformRule rule = new FormTransformRule(IdGenerator.generatRuleId(),
 				dto.getProcessTid(),
 				dto.getSrcFormTid(),
 				dto.getDesFormTId(),

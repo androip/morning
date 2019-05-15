@@ -10,9 +10,9 @@ import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.JSON;
 
+import morining.event.Event;
+import morining.event.EventListener;
 import morning.entity.TaskOverview;
-import morning.event.Event;
-import morning.event.EventListener;
 import morning.repo.TaskOverviewDao;
 import morning.service.event.TaskSubmitEvent;
 import morning.vo.TASK_STATUS;
@@ -52,5 +52,7 @@ public class TaskSubmitListener implements EventListener {
 	public boolean isFailOnException() {
 		return true;
 	}
+
+
 
 }

@@ -1,4 +1,4 @@
-package morning.event;
+package morining.event;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

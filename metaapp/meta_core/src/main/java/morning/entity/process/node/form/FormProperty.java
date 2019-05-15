@@ -22,6 +22,7 @@ public class FormProperty implements Serializable{
 	private String formName;
 	private FORMTYPE formType;
 	private List<FieldProperty> filedProperties;
+	private String ruleId;//单据转换规则
 	
 	
 	

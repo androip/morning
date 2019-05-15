@@ -5,8 +5,8 @@ import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import morning.event.EVENT_TYPE;
-import morning.event.Event;
+import morining.event.EVENT_TYPE;
+import morining.event.Event;
 
 @NoArgsConstructor
 @AllArgsConstructor

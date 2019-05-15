@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 import morning.entity.process.edge.Edge;
 import morning.entity.process.node.GatewayNodeTemplate;
 import morning.entity.process.node.NodeTemplate;
+import morning.entity.process.node.form.FormProperty;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -33,5 +34,17 @@ public class ProcessTemplate implements Serializable{
 	private List<NodeTemplate> nodeTemplateList;
 	private List<GatewayNodeTemplate> gatewayNodeTemplateList;
 	private List<Edge> edgeList;
+	
+	public FormProperty getFormById(String desFormTId) {
+		for(NodeTemplate node : nodeTemplateList) {
+			List<FormProperty> formProeties = node.getFormProeties();
+			for(FormProperty form:formProeties) {
+				if(form.getFormTemplateId().equals(desFormTId)) {
+					return form;
+				}
+			}
+		}
+		return null;
+	}
 
 }

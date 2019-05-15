@@ -23,6 +23,5 @@ public class NodeTemplate implements Serializable{
 	protected String nodeTemplateType;
 	protected List<FormProperty> formProeties;
 	private FormStructure fromStructure;
-	private String ruleId;//单据转换规则
 
 }
