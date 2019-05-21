@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import morining.dto.proc.ProcessTemplateDTO;
+import morining.dto.proc.node.NodeTemplateDto;
+import morining.dto.rule.FormTransformRuleDto;
 
 @FeignClient(value = "meta-server")
 public interface IProcessMetaService {
@@ -22,5 +24,12 @@ public interface IProcessMetaService {
 			 															@RequestParam(required=false,value="size") Integer size);
 
 	@RequestMapping(value = {"/meta/processtemplate"}, method = RequestMethod.GET)
-	public ProcessTemplateDTO getProcessTemplateByNodeTid(@RequestParam(value="nodeTemplateId")String nodeTemplateId);
+	public @ResponseBody ProcessTemplateDTO getProcessTemplateByNodeTid(@RequestParam(value="nodeTemplateId")String nodeTemplateId);
+
+	@RequestMapping(value = {"/meta/processtemplate/{processTid}/nodetmpl/{nodeTid}"}, method = RequestMethod.GET)
+	public @ResponseBody NodeTemplateDto getNodeTemplateListByNodeTid(@PathVariable(value="processTid") String processTid,
+														@PathVariable(value="nodeTid") String nodeTid);
+
+	@RequestMapping(value = {"/meta/rule/{ruleId}"}, method = RequestMethod.GET)
+	public FormTransformRuleDto getFormRuleById(@PathVariable(value="ruleId") String ruleId);
 }

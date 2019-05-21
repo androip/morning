@@ -28,7 +28,7 @@ public class FormRuleController {
 		metaService.createFromRule(dto);
 	}
 	
-	@ApiOperation(value = "创建单据转换规则", notes = "")
+	@ApiOperation(value = "查单据转换规则", notes = "")
 	@RequestMapping(value = {"/{ruleId}"}, method = RequestMethod.GET)
 	public @ResponseBody FormTransformRuleDto getFromRule(@PathVariable String ruleId) throws RuleException {
 		return metaService.getFromRuleById(ruleId);

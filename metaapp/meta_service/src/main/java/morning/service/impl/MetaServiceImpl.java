@@ -13,6 +13,7 @@ import morining.dto.proc.ProcessTemplateDTO;
 import morining.dto.proc.node.NodeTemplateDto;
 import morining.dto.rule.FormTransformRuleDto;
 import morining.event.EVENT_TYPE;
+import morining.event.Event;
 import morining.event.ProcessEventSupport;
 import morining.exception.EventException;
 import morining.exception.MetaServiceException;
@@ -101,7 +102,7 @@ public class MetaServiceImpl {
 		formTransformRuleRepository.save(rule);
 		eventSupport.registerListener(createFormRuleListener, EVENT_TYPE.rule_create);
 		//创建事件
-		FormRuleEvent event = new FormRuleEvent(rule.getTransformId(),
+		Event event = new FormRuleEvent(rule.getTransformId(),
 												rule.getSrcFormTid(),
 												rule.getDesFormTId(),
 												EVENT_TYPE.rule_create,
@@ -110,7 +111,7 @@ public class MetaServiceImpl {
 		noticeByEvent(event);
 	}
 
-	private void noticeByEvent(FormRuleEvent event) {
+	private void noticeByEvent(Event event) {
 		try {
 			eventSupport.dispatchEvent(event, event.getEventType());
 		} catch (EventException | MorningException e) {

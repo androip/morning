@@ -1,5 +1,8 @@
 package morning.service.factory;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import morining.dto.rule.FieldTransformRuleDto;
 import morining.dto.rule.FormTransformRuleDto;
 import morning.bill.FieldTransformRule;
@@ -12,16 +15,20 @@ public class FormTransformRuleDTOFactory {
 				ent.getProcessTid(),
 				ent.getSrcFormTid(),
 				ent.getDesFormTId(),
-				transformDto(ent.getFieldRule()));
+				transformDto(ent.getFieldRules()));
 		return dto;
 	}
 
-	private FieldTransformRuleDto transformDto(FieldTransformRule fieldRule) {
-		FieldTransformRuleDto dto = new FieldTransformRuleDto(fieldRule.getSrcFkey(),
-				fieldRule.getDesFkey(),
-				fieldRule.getFormula(),
-				fieldRule.getRuleType());
-		return dto;
+	private List<FieldTransformRuleDto> transformDto(List<FieldTransformRule> fieldRules) {
+		List<FieldTransformRuleDto> dtolist = new ArrayList<FieldTransformRuleDto>();
+		for(FieldTransformRule fieldRule:fieldRules) {
+			FieldTransformRuleDto dto = new FieldTransformRuleDto(fieldRule.getSrcFkey(),
+					fieldRule.getDesFkey(),
+					fieldRule.getFormula(),
+					fieldRule.getRuleType());
+			dtolist.add(dto);
+		}
+		return dtolist;
 	}
 
 }

@@ -2,9 +2,13 @@ package morning.repo;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
-import morning.entity.process.NodeInstance;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +16,6 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
 
@@ -189,6 +192,37 @@ public class FormInstanceDao {
 
 		return resMap;
 
+	}
+
+	public List<FormInstance> getFormInsByProInsId(String proceInsId) throws DBException {
+		StringBuffer SQL_BUF = new StringBuffer("SELECT * FROM FormInstance");
+		SQL_BUF.append(" WHERE");
+		SQL_BUF.append(" processInstanceId = ?");
+		String sql = SQL_BUF.toString();
+		logger.debug("Form Query SQL id[{}] :"+ sql,proceInsId);
+		List<FormInstance> reslist = new ArrayList<FormInstance>();
+		try {
+			reslist = jdbcTemplate.query(sql, new String[] {proceInsId},new BeanPropertyRowMapper<FormInstance>(FormInstance.class));
+		}catch (Exception e){
+			throw new DBException(e);
+		}
+		return  reslist;
+    
+	}
+
+	public List<FormFieldInstance> queryFieldByFormInsId(String formInsId) throws DBException {
+		StringBuffer SQL_BUF = new StringBuffer("SELECT * FROM FormFieldInstance");
+		SQL_BUF.append(" WHERE");
+		SQL_BUF.append(" formInstanceId = ?");
+		String sql = SQL_BUF.toString();
+		logger.debug("query field SQL id[{}] :"+ sql,formInsId);
+		List<FormFieldInstance> res = new ArrayList<FormFieldInstance>();
+		try {
+			res = jdbcTemplate.query(sql, new String[] {formInsId},new BeanPropertyRowMapper<FormFieldInstance>(FormFieldInstance.class));
+		}catch(Exception e){
+			throw new DBException(e);
+		}
+		return res;
 	}
 }
 

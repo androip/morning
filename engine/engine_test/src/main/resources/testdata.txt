@@ -3,10 +3,10 @@
     {
       "formFieldInstanceList": [
         {
-          "fkey": "string",
+          "fkey": "FNum",
           "formInstanceId": "string",
           "ftype": "string",
-          "fval": "string",
+          "fval": "10",
           "rkey": "string",
           "tableName": "string"
         }
@@ -22,5 +22,5 @@
   "nodeStatus": 0,
   "nodeTemplateId": "n1",
   "nodeType": "Task",
-  "processInsId": "proc20190509170949"
+  "processInsId": "proc20190521155037"
 }

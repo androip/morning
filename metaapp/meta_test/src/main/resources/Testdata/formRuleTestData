@@ -1,0 +1,16 @@
+{
+  "desFormTId": "formTid2",
+  "fieldRule": [
+    {
+      "desFkey": "FTol",
+      "formula": "FNum * 10",
+      "ruleType": "string",
+      "srcFkey": [
+        "FNum"
+      ]
+    }
+  ],
+  "processTid": "p1",
+  "srcFormTid": "formTid1",
+  "transformId": "string"
+}

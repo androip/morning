@@ -1,6 +1,7 @@
 package morning.service.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -9,12 +10,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import morining.api.IProcessMetaService;
 import morining.dto.proc.ProcessTemplateDTO;
 import morining.dto.proc.edge.EdgeDto;
 import morining.dto.proc.node.ConditionDto;
 import morining.dto.proc.node.NodeTemplateDto;
+import morining.dto.proc.node.form.FormPropertyDto;
+import morining.dto.rule.FieldTransformRuleDto;
+import morining.dto.rule.FormTransformRuleDto;
 import morining.event.EVENT_TYPE;
 import morining.event.Event;
 import morining.event.ProcessEventSupport;
@@ -38,6 +41,7 @@ import morning.service.event.ProcessStartEvent;
 import morning.service.event.TaskSubmitEvent;
 import morning.service.event.listener.ProcessStartListener;
 import morning.service.event.listener.TaskSubmitListener;
+import morning.service.util.FormulaComputor;
 import morning.service.util.TimeUtil;
 import morning.util.IdGenerator;
 import morning.vo.FormFieldInstance;
@@ -122,7 +126,6 @@ public class EngineService {
 	 * @param edgeList
 	 * @param toNodeTids
 	 * @param toNodeInsIds
-	 * @param nodeType 
 	 */
 	private void extractToNodeIDs(List<EdgeIns> edgeList, List<String> toNodeTids, List<String> toNodeInsIds) {
 		for(EdgeIns edge:edgeList) {
@@ -309,7 +312,7 @@ public class EngineService {
 
 
 	/**
-	 * 用户提交表单：节点状态为{@code TASK_STATUS.Ready}创建保存节点实例/表单实例，变更状态{@code TASK_STATUS.Running}；
+	 * 用户提交表单：节点状态为{@code TASK_STATUS.Ready}创建保存节点实例/表单实例，变更状态{@code TASK_STATUS.Running}；</p>
 	 * 节点状态为{@code TASK_STATUS.Running}获取实例，更新保存实例
 	 * @param nodeInstanceDto
 	 * @param userId
@@ -342,10 +345,59 @@ public class EngineService {
 		}
 	}
 
+	/**
+	 * 取节点信息（包含表单以及字段值） 
+	 */
 	public Map<String,List<FormFieldInstance>> getNodeIns(String nodeInsId) throws DBException {
 		List<FormInstance> formInsList = formInstanceDao.getFormInsByNodeInsId(nodeInsId);
 		Map<String,List<FormFieldInstance>>  formFieldMap = formInstanceDao.getFormFieldInstance(formInsList);
 		return formFieldMap;
+	}
+
+
+	/**
+	 * 当节点状态为{@code TASK_STATUS.Ready}时，根据单据转换规则计算此节点字段的默认值。</p>
+	 * 由于当前节点尚未创建，没有实例。
+	 * @param processTid
+	 * @param nodeTid
+	 * @return Key:表单模版ID，Val:计算过的字段值Map
+	 * @throws DBException 
+	 */
+	public Map<String, Map<String, Object>> getReadyForm(String processTid,String nodeTid,String proceInsId) throws DBException {
+		Map<String, Map<String, Object>> formField = new HashMap<String,Map<String,Object>>();
+		NodeTemplateDto nodeDto = processMetaService.getNodeTemplateListByNodeTid(processTid,nodeTid);
+		List<FormPropertyDto> formProperties = nodeDto.getFormProperties();
+		for(FormPropertyDto formdto : formProperties) {
+			Map<String, Object> currentFormFieldMap = new HashMap<String,Object>();
+			//根据ruleId取rule
+			FormTransformRuleDto ruleDto = processMetaService.getFormRuleById(formdto.getRuleId());
+			//封装参数。根据rule获取源单的字段和值，并调用FormulaComputor
+			List<FieldTransformRuleDto> fieldRules = ruleDto.getFieldRule();
+			for(FieldTransformRuleDto fieldrule:fieldRules) {
+				Map<String,Object> inputFields = new HashMap<String,Object>();
+				String formInsId = getFormInsFromProcessIns(proceInsId,ruleDto.getSrcFormTid());
+				List<FormFieldInstance> fields = formInstanceDao.queryFieldByFormInsId(formInsId);
+				for(FormFieldInstance field:fields) {
+					if(fieldrule.getSrcFkey().contains(field.getFkey())) {
+						inputFields.put(field.getFkey(), field.getFval());
+					}
+				}
+				Object result = FormulaComputor.calculate(inputFields, fieldrule.getFormula());
+				currentFormFieldMap.put(fieldrule.getDesFkey(), result);
+			}
+			formField.put(formdto.getFormTemplateId(), currentFormFieldMap);
+		}
+		return formField;
+	}
+
+	private String getFormInsFromProcessIns(String proceInsId, String srcFormTid) throws DBException {
+		List<FormInstance> formInsList = formInstanceDao.getFormInsByProInsId(proceInsId);
+		for(FormInstance form:formInsList) {
+			if(srcFormTid.equals(form.getFormTid())) {
+				return form.getFormInstanceId();
+			}
+		}
+		return null;
 	}
 }
 

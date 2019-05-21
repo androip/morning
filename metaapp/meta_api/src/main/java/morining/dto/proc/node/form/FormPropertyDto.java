@@ -21,5 +21,6 @@ public class FormPropertyDto implements Serializable{/**
 	private String formName;
 	private String formType;
 	private List<FiedPropertyDto> fieldProperties;
+	private String ruleId;//单据转换规则
 
 }

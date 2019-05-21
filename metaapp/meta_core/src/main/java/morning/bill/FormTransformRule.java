@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.List;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
@@ -27,5 +28,5 @@ public class FormTransformRule implements Serializable{
     private String processTid;
 	private String srcFormTid;
     private String desFormTId;
-    private FieldTransformRule fieldRule;
+    private List<FieldTransformRule> fieldRules;
 }

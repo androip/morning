@@ -44,6 +44,15 @@ public class ProcessTemplate implements Serializable{
 				}
 			}
 		}
+		for(NodeTemplate node : gatewayNodeTemplateList) {
+			List<FormProperty> formProeties = node.getFormProeties();
+			for(FormProperty form:formProeties) {
+				if(form.getFormTemplateId().equals(desFormTId)) {
+					return form;
+				}
+			}
+		}
+		
 		return null;
 	}
 

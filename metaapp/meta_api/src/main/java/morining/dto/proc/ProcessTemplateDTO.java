@@ -61,6 +61,10 @@ public class ProcessTemplateDTO implements Serializable{
 			if(nodeTid.equals(dto.getNodeTemplateId()))
 				return dto;
 		}
+		for(NodeTemplateDto dto : gatewayNodeTemplateDtoList) {
+			if(nodeTid.equals(dto.getNodeTemplateId()))
+				return dto;
+		}
 		return null;
 	}
 

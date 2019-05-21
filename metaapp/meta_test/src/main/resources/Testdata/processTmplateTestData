@@ -32,8 +32,8 @@
         {
           "fieldProperties": [
             {
-              "filedKey": "string",
-              "filedName": "string",
+              "filedKey": "FTol",
+              "filedName": "申请总数",
               "filedType": "string",
               "filedViewName": "string",
               "readOnly": true,
@@ -49,7 +49,7 @@
             }
           ],
           "formName": "string",
-          "formTemplateId": "formTid1",
+          "formTemplateId": "formTid2",
           "formType": "bill"
         }
       ],
@@ -101,8 +101,8 @@
         {
           "fieldProperties": [
             {
-              "filedKey": "string",
-              "filedName": "string",
+              "filedKey": "FNum",
+              "filedName": "申请数量",
               "filedType": "string",
               "filedViewName": "string",
               "readOnly": true,
@@ -118,7 +118,7 @@
             }
           ],
           "formName": "string",
-          "formTemplateId": "string",
+          "formTemplateId": "formTid1",
           "formType": "bill"
         }
       ],

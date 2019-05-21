@@ -62,6 +62,7 @@ public class ProcessTemplateDtoFactory {
 			 dto.setFormName(property.getFormName());
 			 dto.setFormType(property.getFormType().getTypeValue());
 			 dto.setFieldProperties(transformFieldProperties(property.getFiledProperties()));
+			 dto.setRuleId(property.getRuleId());
 			 retDtos.add(dto);
 		 }
 		return retDtos;

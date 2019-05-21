@@ -1,6 +1,7 @@
 package morining.dto.rule;
 
 import java.io.Serializable;
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,6 +21,6 @@ public class FormTransformRuleDto implements Serializable{
     private String processTid;
 	private String srcFormTid;
     private String desFormTId;
-    private FieldTransformRuleDto fieldRule;
+    private List<FieldTransformRuleDto> fieldRule;
 
 }

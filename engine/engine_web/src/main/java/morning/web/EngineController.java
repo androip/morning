@@ -48,10 +48,16 @@ public class EngineController {
 		engineService.submitForm(nodeInstanceDto,userId);
 	}
 
-	@ApiOperation(value = "查询表单信息", notes = "K：表单ID，V：表单字段信息")
+	@ApiOperation(value = "查询表单信息/加载字段", notes = "K：表单实例ID，V：表单字段信息。此时节点状态为Running")
 	@RequestMapping(value = {"/procins/nodeins/{nodeInsId}"}, method = RequestMethod.GET)
-	public @ResponseBody Map<String, List<FormFieldInstance>> getNodeIns(@PathVariable String nodeInsId) throws DBException {
+	public @ResponseBody Map<String, List<FormFieldInstance>> getRunningFrom(@PathVariable String nodeInsId) throws DBException {
 		return engineService.getNodeIns(nodeInsId);
+	}
+	
+	@ApiOperation(value = "查询表单信息/根据单据转换规则加载字段", notes = "K：表单TID，V：表单字段信息。此时节点状态为Ready")
+	@RequestMapping(value = {"/form"}, method = RequestMethod.GET)
+	public @ResponseBody Map<String, Map<String,Object>> getReadyForm(@RequestParam String processTId ,@RequestParam String nodeTid,@RequestParam String procInsId) throws DBException {
+		return engineService.getReadyForm(processTId,nodeTid,procInsId);
 	}
 	
 	@ApiOperation(value = "保存表单", notes = "")
