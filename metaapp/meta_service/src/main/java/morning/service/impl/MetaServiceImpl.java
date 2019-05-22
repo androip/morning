@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -85,7 +86,8 @@ public class MetaServiceImpl {
 	}
 
 
-	//TODO 需要添加缓存
+	// 需要添加缓存
+	@Cacheable(value = "nodeTmp" ,key = "#p0+#p1")
 	public NodeTemplateDto getNodeTemplateLByNodeTid(String processTid,String nodeTid) throws MetaServiceException {
 		ProcessTemplateDTO proceTmpDto = getProcessTemplateById(processTid);
 		NodeTemplateDto nodeTmp = proceTmpDto.getNodeTemplateById(nodeTid);

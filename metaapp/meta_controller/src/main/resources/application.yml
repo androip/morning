@@ -10,3 +10,8 @@ spring:
   data:
     mongodb:
       uri: mongodb://root:123456@localhost:27017/morning
+  redis:
+    host: 127.0.0.1
+    jedis: 
+      pool: 
+        max-active: 8
