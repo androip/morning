@@ -15,14 +15,18 @@
   </properties>
   <dependencies>
     <dependency>
-    	<groupId>meta_manager</groupId>
-    	<artifactId>meta_core</artifactId>
-    	<version>0.0.1-SNAPSHOT</version>
+	    	<groupId>meta_manager</groupId>
+	    	<artifactId>meta_core</artifactId>
+	    	<version>0.0.1-SNAPSHOT</version>
     </dependency>
     <dependency>
-    	<groupId>meta_manager</groupId>
-    	<artifactId>meta_api</artifactId>
-    	<version>0.0.1-SNAPSHOT</version>
+	    	<groupId>meta_manager</groupId>
+	    	<artifactId>meta_api</artifactId>
+	    	<version>0.0.1-SNAPSHOT</version>
     </dependency>
+    <dependency>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-amqp</artifactId>
+	</dependency>
   </dependencies>
 </project>
