@@ -26,12 +26,13 @@ public class ProcessEventSupport {
 	 * 注册全局事件监听器
 	 * @param listener
 	 */
-	synchronized public void registerListener(EventListener listener) {
+	synchronized public ProcessEventSupport registerListener(EventListener listener) {
 		if(null != listener) {
 			if(!listenerList.contains(listener)) {
 				listenerList.add(listener);
 			}
 		}
+		return this;
 	}
 	
 	/**
@@ -39,7 +40,7 @@ public class ProcessEventSupport {
 	 * @param listener
 	 * @param eventType
 	 */
-	synchronized public void registerListener(EventListener listener,EVENT_TYPE...eventType) {
+	synchronized public ProcessEventSupport registerListener(EventListener listener,EVENT_TYPE...eventType) {
 		logger.debug("before registerListener typedListeners {}",typedListeners);
 		if(null != listener) {
 			if(eventType == null || eventType.length == 0 ) {
@@ -51,6 +52,38 @@ public class ProcessEventSupport {
 			}
 		}
 		logger.debug("after registerListener typedListeners {}",typedListeners);
+		return this;
+	}
+	
+	/**
+	 * 将监听器添加到{@link EventListenerPipeline}的头部
+	 * @param listener
+	 * @param eventType
+	 */
+	synchronized public ProcessEventSupport registerListenerToPipelineHead(EventListener listener) {
+		listener.pipeline().addFirst(listener);
+		return this;
+	}
+	/**
+	 * 将监听器添加到{@link EventListenerPipeline}中
+	 * @param listener
+	 * @param eventType
+	 */
+	synchronized public ProcessEventSupport registerListenerToPipeline(EventListener listener) {
+		listener.pipeline().add(listener);
+		return this;
+	}
+	
+	/**
+	 * 将监听器添加到{@link EventListenerPipeline}中
+	 * @param perlistener 前一个监听器
+	 * @param 当前监听器
+	 */
+	synchronized public ProcessEventSupport registerListenerToPipelineAfter(EventListener perlistener,EventListener listener) {
+		if(null != perlistener) {
+			perlistener.pipeline().add(listener);
+		}
+		return this;
 	}
 	
 
@@ -156,4 +189,27 @@ public class ProcessEventSupport {
 		}
 	}
 
+	/**
+	 * 根据{@link EventListenerPipeline}将{@code event}转发给下一个监听
+	 * @param updateEvent
+	 * @param listener 当前监听
+	 * @throws MorningException 
+	 */
+	public void dispatchEventToNextListener(EventListener listener,Event event) throws MorningException {
+		try {
+			logger.debug("listener {} ",listener);
+			listener.pipeline().getNext(listener).onEvent(event);
+		} catch(Throwable t) {
+			if(listener.isFailOnException()) {
+				t.printStackTrace();
+				throw new MorningException("Exception while exeuting event - listener",t);
+			}else {
+				logger.error("Exception while exeuting event - listener");
+			}
+		}
+	}
+
+	synchronized public void initListener(EventListener listener) {
+		listener.init();
+	}
 }

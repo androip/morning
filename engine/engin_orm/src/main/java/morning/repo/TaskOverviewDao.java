@@ -58,33 +58,31 @@ public class TaskOverviewDao {
 	}
 
 	public void save(List<TaskOverview> taskOtaskOVs) throws DBException {
-		logger.info("save all TaskOverview {}",taskOtaskOVs);
-		StringBuffer INSTER_SQL = new StringBuffer("INSERT INTO TaskOverview");
-		INSTER_SQL.append("(userId,processInsId,processNodeInsId,createTime,taskName,processName,taskStatus,nodeTId,processsTId)");
-		INSTER_SQL.append("VALUES");
-		for(TaskOverview view:taskOtaskOVs) {
-			INSTER_SQL.append("(");
-			INSTER_SQL.append("'").append(view.getUserId()).append("'").append(",");
-			INSTER_SQL.append("'").append(view.getProcessInsId()).append("'").append(",");
-			INSTER_SQL.append("'").append(view.getProcessNodeInsId()).append("'").append(",");
-			INSTER_SQL.append("'").append(view.getCreateTime()).append("'").append(",");
-			INSTER_SQL.append("'").append(view.getTaskName()).append("'").append(",");
-			INSTER_SQL.append("'").append(view.getProcessName()).append("'").append(",");
-			INSTER_SQL.append("'").append(view.getTaskStatus()).append("'").append(",");
-			INSTER_SQL.append("'").append(view.getNodeTId()).append("'").append(",");
-			INSTER_SQL.append("'").append(view.getProcesssTId()).append("'");
-			INSTER_SQL.append("),");
+		if(!taskOtaskOVs.isEmpty()) {
+			logger.info("save all TaskOverview {}",taskOtaskOVs);
+			StringBuffer INSTER_SQL = new StringBuffer("INSERT INTO TaskOverview");
+			INSTER_SQL.append("(userId,processInsId,processNodeInsId,createTime,taskName,processName,taskStatus,nodeTId,processsTId)");
+			INSTER_SQL.append("VALUES");
+			for(TaskOverview view:taskOtaskOVs) {
+				INSTER_SQL.append("(");
+				INSTER_SQL.append("'").append(view.getUserId()).append("'").append(",");
+				INSTER_SQL.append("'").append(view.getProcessInsId()).append("'").append(",");
+				INSTER_SQL.append("'").append(view.getProcessNodeInsId()).append("'").append(",");
+				INSTER_SQL.append("'").append(view.getCreateTime()).append("'").append(",");
+				INSTER_SQL.append("'").append(view.getTaskName()).append("'").append(",");
+				INSTER_SQL.append("'").append(view.getProcessName()).append("'").append(",");
+				INSTER_SQL.append("'").append(view.getTaskStatus()).append("'").append(",");
+				INSTER_SQL.append("'").append(view.getNodeTId()).append("'").append(",");
+				INSTER_SQL.append("'").append(view.getProcesssTId()).append("'");
+				INSTER_SQL.append("),");
+			}
+			String sql = INSTER_SQL.toString();
+			logger.debug("TaskOverview SQL: {}",sql.substring(0,sql.length()-1));
+			try {
+				jdbcTemplate.execute(sql.substring(0,sql.length()-1));
+			}catch (Exception e){
+				throw new DBException(e);
+			}
 		}
-		String sql = INSTER_SQL.toString();
-		logger.debug("TaskOverview SQL: {}",sql.substring(0,sql.length()-1));
-		try {
-			jdbcTemplate.execute(sql.substring(0,sql.length()-1));
-		}catch (Exception e){
-			throw new DBException(e);
-		}
-		
-	
-		
-		
 	}
 }

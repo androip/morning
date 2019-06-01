@@ -7,8 +7,11 @@ import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.JSON;
 
+import morining.event.EVENT_TYPE;
 import morining.event.Event;
 import morining.event.EventListener;
+import morining.event.EventListenerPipeline;
+import morining.event.ProcessEventSupport;
 import morining.exception.MetaServiceException;
 import morning.entity.process.ProcessTemplate;
 import morning.repo.ProcessTemplateRepository;
@@ -20,7 +23,8 @@ public class CreateFormRuleListener implements EventListener{
 	private static Logger logger = LoggerFactory.getLogger(CreateFormRuleListener.class);
 	@Autowired
 	private ProcessTemplateRepository processTemplateRepository;
-	
+	@Autowired
+	private ProcessEventSupport eventSupport;
 	@Override
 	public void onEvent(Event event) throws Exception {
 		logger.debug("On listener: {}",JSON.toJSONString(event));
@@ -37,6 +41,16 @@ public class CreateFormRuleListener implements EventListener{
 	@Override
 	public boolean isFailOnException() {
 		return true;
+	}
+
+	@Override
+	public void init() {
+		eventSupport.registerListener(this, EVENT_TYPE.rule_create);
+	}
+
+	@Override
+	public EventListenerPipeline pipeline() {
+		return null;
 	}
 
 }

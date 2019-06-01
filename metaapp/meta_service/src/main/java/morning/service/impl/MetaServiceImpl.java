@@ -102,7 +102,7 @@ public class MetaServiceImpl {
 	public void createFromRule(FormTransformRuleDto dto) {
 		FormTransformRule rule = new FormTransformRuleFactory().create(dto);
 		formTransformRuleRepository.save(rule);
-		eventSupport.registerListener(createFormRuleListener, EVENT_TYPE.rule_create);
+		createFormRuleListener.init();
 		//创建事件
 		Event event = new FormRuleEvent(rule.getTransformId(),
 												rule.getSrcFormTid(),
