@@ -11,6 +11,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import morning.entity.process.NodeInstance;
+import morning.entity.process.ProcessInstance;
 import morning.exception.DBException;
 
 @Component
@@ -46,22 +47,22 @@ public class NodeInstanceDao {
 		SELECT_SQL.append(" WHERE 1 = 1");
 		SELECT_SQL.append(" AND nodeInsId = ?");
 		String sql = SELECT_SQL.toString();
-		List<NodeInstance> reslist = new ArrayList<NodeInstance>();
 		NodeInstance obj = null;
+		logger.debug("NodeInstance getById SQL:"+sql);
+		List<NodeInstance> reslist = null;
 		try {
-			obj = jdbcTemplate.queryForObject(sql,new String[] {nodeInsId},NodeInstance.class);
-//			reslist = jdbcTemplate.query(sql, new String[] {nodeInsId},new BeanPropertyRowMapper<NodeInstance>(NodeInstance.class));
+//			obj = jdbcTemplate.queryForObject(sql,new String[] {nodeInsId},NodeInstance.class);
+			reslist  = jdbcTemplate.query(sql, new String[] {nodeInsId},new BeanPropertyRowMapper<NodeInstance>(NodeInstance.class));
 		}catch (Exception e){
 			throw new DBException(e);
 		}
-		return obj;
+		return reslist.get(0);
 	}
 
 	public void updateNodeStatus(NodeInstance nodeIns) throws DBException {
 		StringBuffer SQL_BUF = new StringBuffer("UPDATE NodeInstance");
-		SQL_BUF.append(" SET nodeStatus = CASE nodeInsId")
-		.append(" WHENE").append("'").append(nodeIns.getNodeInsId()).append("'").append("THENE").append(nodeIns.getNodeStatus())
-		.append(" END")
+		SQL_BUF.append(" SET nodeStatus = ")
+		.append(nodeIns.getNodeStatus())
 		.append(" WHERE nodeInsId = ").append("'").append(nodeIns.getNodeInsId()).append("'");
 		String sql = SQL_BUF.toString();
 		logger.debug("NodeInstance SQL:"+sql);

@@ -85,22 +85,35 @@ public class FormInstanceDao {
 		
 	}
 
-	
+	/**
+	 * UPDATE FormFieldInstance AS F 
+		SET F.fval = CASE F.fkey 
+		WHEN 'FDep' THEN 'A部门' 
+		WHEN 'FStuff' THEN'姜鹏' 
+		WHEN 'FMaterialNo' THEN'M001' 
+		WHEN 'FMaterialName' THEN'铅笔'
+		WHEN'FNum' THEN'数量' 
+		END 
+		WHERE F.formInstanceId IN ('''')
+	 * @param formInsDtoList
+	 * @throws DBException
+	 */
 	public void updateFormFieldVal(List<FormInstancDto> formInsDtoList) throws DBException {
 		StringBuffer SQL_BUF = new StringBuffer("UPDATE FormFieldInstance AS F");
 		SQL_BUF.append(" SET F.fval = CASE F.fkey");
 		for(FormInstancDto form : formInsDtoList) {
 			List<FormFieldInstance> fields = form.getFormFieldInstanceList();
 			for(FormFieldInstance field: fields) {
-				SQL_BUF.append(" WHENE").append("'").append(field.getFkey()).append("'")
-				.append(" THEN").append("'").append(field.getFval());
+				SQL_BUF.append(" WHEN").append("'").append(field.getFkey()).append("'")
+				.append(" THEN ").append("'").append(field.getFval()).append("'");
 			}
 		}
 		SQL_BUF.append(" END")
 		.append(" WHERE F.formInstanceId ").append("IN (");
 		formInsDtoList.forEach(form->{
-			SQL_BUF.append("'").append(form.getFormInsid()).append("'");
+			SQL_BUF.append("'").append(form.getFormInsid()).append("'").append(",");
 		});
+		SQL_BUF.deleteCharAt(SQL_BUF.length() - 1);
 		SQL_BUF.append(")");
 		String sql = SQL_BUF.toString();
 		logger.debug("FormFiels update SQL:"+sql);

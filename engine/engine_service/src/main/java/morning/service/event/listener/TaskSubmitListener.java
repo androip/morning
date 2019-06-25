@@ -44,6 +44,7 @@ public class TaskSubmitListener implements EventListener {
 					event.getProcessTId());
 			taskOtaskOVs.add(taskOV);
 		}
+		//TODO 更新上一个任务一览状态
 		// 把新Start节点消息保存到“任务一览”
 		taskOverviewDao.save(taskOtaskOVs);
 	}

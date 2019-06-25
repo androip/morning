@@ -3,24 +3,60 @@
     {
       "formFieldInstanceList": [
         {
-          "fkey": "FNum",
+          "fkey": "FDep",
           "formInstanceId": "string",
-          "ftype": "string",
-          "fval": "10",
-          "rkey": "string",
-          "tableName": "string"
+          "ftype": "String",
+          "fval": "A部门",
+          "rkey": "FDepNo",
+          "tableName": "t_Department"
+        },{
+          "fkey": "FStuff",
+          "formInstanceId": "string",
+          "ftype": "String",
+          "fval": "姜鹏",
+          "rkey": "FStuffNo",
+          "tableName": "t_Stuff"
         }
       ],
-      "formInsid": "string",
-      "formName": "string",
-      "formTid": "string",
-      "formType": "Bill"
+      "formInsid": "",
+      "formName": "采购申请单实例1",
+      "formTid": "formTid1",
+      "formType": "bill"
+    },{
+      "formFieldInstanceList": [
+        {
+          "fkey": "FMaterialNo",
+          "formInstanceId": "string",
+          "ftype": "String",
+          "fval": "M001",
+          "rkey": "",
+          "tableName": ""
+        },{
+          "fkey": "FMaterialName",
+          "formInstanceId": "string",
+          "ftype": "String",
+          "fval": "铅笔",
+          "rkey": "string",
+          "tableName": "string"
+        },{
+          "fkey": "FNum",
+          "formInstanceId": "string",
+          "ftype": "String",
+          "fval": "数量",
+          "rkey": "",
+          "tableName": ""
+        }
+      ],
+      "formInsid": "",
+      "formName": "采购申请单明细实例1",
+      "formTid": "formTid1",
+      "formType": "detail"
     }
   ],
-  "nodeInsId": "string",
-  "nodeName": "string",
+  "nodeInsId": "",
+  "nodeName": "采购申请",
   "nodeStatus": 0,
   "nodeTemplateId": "n1",
   "nodeType": "Task",
-  "processInsId": "proc20190521155037"
+  "processInsId": "proc20190625161419"
 }
