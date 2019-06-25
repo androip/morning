@@ -237,6 +237,23 @@ public class FormInstanceDao {
 		}
 		return res;
 	}
+
+	public List<FormFieldInstance> getFieldInsByNodeInsId(String nodeInsId) throws DBException {
+		StringBuffer SQL_BUF = new StringBuffer("SELECT * FROM FormFieldInstance F ");
+		SQL_BUF.append("WHERE F.formInstanceId IN (");
+		SQL_BUF.append("SELECT form.formInstanceId ");
+		SQL_BUF.append("FROM FormInstance form ");
+		SQL_BUF.append("WHERE form.nodeInstanceId= ? );");
+		String sql = SQL_BUF.toString();
+		logger.debug("query field SQL id[{}] :"+ sql,nodeInsId);
+		List<FormFieldInstance> res = new ArrayList<FormFieldInstance>();
+		try {
+			res = jdbcTemplate.query(sql, new String[] {nodeInsId},new BeanPropertyRowMapper<FormFieldInstance>(FormFieldInstance.class));
+		}catch(Exception e){
+			throw new DBException(e);
+		}
+		return res;
+	}
 }
 
 

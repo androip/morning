@@ -15,12 +15,10 @@ public class TaskSubmitEvent extends Event {
 
 	private String msgBody;
 	private List<String> toNodeTids;
-	private List<String> toNodeInsIds;
 	
-	public TaskSubmitEvent(String msgBody, List<String> toNodeTids, List<String> toNodeInsIds, EVENT_TYPE type) {
+	public TaskSubmitEvent(String msgBody, List<String> toNodeTids, EVENT_TYPE type) {
 		this.msgBody = msgBody;
 		this.toNodeTids = toNodeTids;
-		this.toNodeInsIds = toNodeInsIds;
 		super.setEventType(type);
 	}
 

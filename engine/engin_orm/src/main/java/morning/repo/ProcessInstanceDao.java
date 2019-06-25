@@ -41,9 +41,19 @@ public class ProcessInstanceDao {
 		StringBuffer INSTER_SQL = new StringBuffer("select * from ProcessInstance\n" + 
 				"WHERE processInsId = ?");
 		String sql = INSTER_SQL.toString();
-		logger.debug("TaskOverview Query SQL: {}",sql);
+		logger.debug("getById SQL: {}",sql);
 		List<ProcessInstance> reslist = jdbcTemplate.query(sql, new String[] {processInsId},new BeanPropertyRowMapper<ProcessInstance>(ProcessInstance.class));
 		return reslist.get(0);
+	}
+
+
+	public void updateStatus(String procInsId,String status) {
+		StringBuffer UPDATE_SQL = new StringBuffer("UPDATE `ProcessInstance` AS P");
+		UPDATE_SQL.append(" SET P.status = '").append(status).append("'");
+		UPDATE_SQL.append(" WHERE P.processInsId = '").append(procInsId).append("'");
+		String sql = UPDATE_SQL.toString();
+		logger.debug("updateStatus SQL: {}",sql);
+		jdbcTemplate.execute(sql);
 	}
 
 }

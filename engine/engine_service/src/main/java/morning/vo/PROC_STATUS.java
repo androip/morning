@@ -1,7 +1,7 @@
 package morning.vo;
 
 public enum PROC_STATUS {
-	READY("Ready"), RUNNING("Running");
+	READY("Ready"), RUNNING("Running"), END("End");
 
 	private String strVal;
 	

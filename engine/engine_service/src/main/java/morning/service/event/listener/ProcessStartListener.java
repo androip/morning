@@ -10,8 +10,11 @@ import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.JSON;
 
+import morining.event.EVENT_TYPE;
 import morining.event.Event;
 import morining.event.EventListener;
+import morining.event.EventListenerPipeline;
+import morining.event.ProcessEventSupport;
 import morning.entity.TaskOverview;
 import morning.exception.DBException;
 import morning.repo.TaskOverviewDao;
@@ -24,9 +27,10 @@ import morning.vo.TASK_STATUS;
 @Component
 public class ProcessStartListener implements EventListener{
 
-	
 	private static Logger logger = LoggerFactory.getLogger(ProcessStartListener.class);
-	
+	@Autowired
+	private ProcessEventSupport eventSupport;
+	private EventListenerPipeline pipeline;
 	@Autowired
 	private TaskOverviewDao taskOverviewDao;
 	@Override
@@ -55,6 +59,19 @@ public class ProcessStartListener implements EventListener{
 	@Override
 	public boolean isFailOnException() {
 		return true;
+	}
+
+	@Override
+	synchronized public EventListenerPipeline pipeline() {
+		if(pipeline == null) {
+			pipeline = new EventListenerPipeline();
+		}
+		return this.pipeline;
+	}
+
+	@Override
+	public void init()  {
+		eventSupport.registerListener(this,EVENT_TYPE.proc_start);
 	}
 
 }
