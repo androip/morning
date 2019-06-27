@@ -37,3 +37,14 @@ Redis缓存高频率数据
 ### 架构一览
 
 ![Image text](https://github.com/androip/morning/blob/master/framework.png)
+
+
+
+## 使用步骤
+1 创建流程模版
+2 指定流程模版，实例化一个流程
+3 根据用户查询任务一览
+4 根据nodeTid查询节点模版
+前台解析模版，给用户展示单据录入界面
+5 用户保存/提交表单
+
